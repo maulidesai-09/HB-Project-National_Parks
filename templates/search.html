@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Search Bar {% endblock %}
+
+{% block body %}
+
+    <h1> Search for a Park </h1>
+
+    <div class="form-container">
+        <form class="form" method="GET" action="/search/result">
+            <p>
+                <select name="park" id="park-name" placeholder="Select a park name..">
+                    <option  id="default-option" value="Select a park.."> Select a park.. </option>
+                    {% for name in park_names %}
+                    <option id="selected-option" value="{{ name }}" > {{ name }} </option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <input type="submit" id="search-name" value="Search">
+                <input type="submit" id="clear-name" value="Clear"> 
+            </p>
+        </form>
+    </div>
+
+    <!-- <script src="/static/js/search.js"> </script> -->
+
+{% endblock %}
+    

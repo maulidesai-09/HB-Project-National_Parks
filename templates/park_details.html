@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %} {{park.park_name}} - Details {% endblock %}
+
+{% block body %}
+    <!-- <form name="park-details"> -->
+
+    <h1 id="park_name"> {{ park.park_name }} </h1>
+    <form action="/parks/{{ park.id }}/favorite" name="favorite" method="POST"> 
+        <input type="submit" name="user_favorite" id="user_favorite" value="Add to Favorites" >
+    </form>
+    
+    <br>
+
+    <form action="/parks/{{ park.id }}/wishlist" name="wishlist" method="POST"> 
+        <input type="submit" name="user_wishlist" id="user_wishlist" value="Add to Wishlist"> 
+    </form>
+
+    <p>
+        <b> General Information: </b>
+        <p> {{ park.general_info }} </p>
+    </p>
+
+    <p> 
+        <b> History: </b>
+        <p> {{ park.history }} </p>
+    </p>
+
+    <p>
+        <b> Main Attractions: </b>
+        <p> {{ park.main_attractions }} </p>
+
+    </p>
+
+    <p>
+        <b> Trails: </b>
+        <p> {{ park.trails }} </p>
+    </p>
+
+    <p id="lat" hidden> {{ park.location_lat }} </p>
+    <p id="long" hidden> {{ park.location_long }} </p>
+
+
+    <p>
+        <b> Location: </b>
+    </p>
+
+    <section class="map">
+        <div id="map"></div>
+    </section>
+
+<!-- 
+    <p>
+        <b> Location : </b>
+        <p id="map">
+            
+        </p>
+    </p> -->
+
+
+    <script src="/static/js/maps.js"></script>
+    <script
+        async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6V-HF-eLwCoNETYGfZJ1XxvwbBfQHEtY&callback=initMap">
+    </script>
+
+    <!-- <script src="/static/js/favorite-wishlist.js"> </script> -->
+
+    <!-- </form> -->
+
+{% endblock %}

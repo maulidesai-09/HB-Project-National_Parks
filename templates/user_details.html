@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ user.fname }} {{ user.lname }} - Details {% endblock %}
+
+{% block body %}
+
+    <h1> {{ user.fname }} {{ user.lname }} </h1>
+
+    <p>
+        <b> Email: </b>
+        <p> {{ user.email }} </p>
+    </p>
+    
+    <p>
+        <b> Password: </b>
+        <p> {{ user.password }} </p>
+    </p>
+
+    <p>
+        <b> Favorites </b>
+            <ul>
+                {% for favorite in user.favorites %}
+                <li> 
+                    {{ favorite.park.park_name }}
+                        <form style="display: inline-block;" action="/parks/{{ favorite.park.id }}/remove_favorite" name="form_remove_fav">
+                            <input type="submit" id="remove_fav" value="Remove from Favorites"> </button>
+                        </form>
+                </li>
+                {% endfor %}
+            </ul>
+    </p>
+
+    <p>
+        <b> Wishlist </b>
+            <ul>
+                {% for wish in user.wishlists %}
+                <li> 
+                    {{ wish.park.park_name }} 
+                    <form style="display: inline-block;" action="/parks/{{ wish.park.id }}/remove_wish" name="form_remove_wish">
+                        <button id="remove_wish"> Remove from Wishlist </li>
+                    </form>
+                {% endfor %}
+            </ul>
+    </p>
+
+{% endblock %}

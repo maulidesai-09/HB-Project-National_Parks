@@ -1,0 +1,79 @@
+# #1 to 50
+# start_count_one = "0" #default start_count is 0
+# HEADERS_one = HEADERS.copy()
+# HEADERS_one['start'] = start_count_one
+
+# one = requests.get(url, headers=HEADERS_one)
+# data_one = one.json()
+# parks_one = data_one['data'][0]['fullName']
+# print("Data 1 = ", parks_one)
+
+
+# #51 to 101
+# start_count_two = "51" #default start_count is 0
+# HEADERS_two = HEADERS.copy()
+# HEADERS_two['start'] = start_count_two
+
+# two = requests.get(url, headers=HEADERS_two)
+# data_two = two.json()
+# parks_two = data_two['data'][0]['fullName']
+# print("Data 2 = ", parks_two)
+
+
+# #102 to 152
+# start_count_three = "102"
+# HEADERS_three = HEADERS.copy()
+# HEADERS_three['start'] = start_count_three
+
+# three = requests.get(url, headers=HEADERS_three)
+
+
+# #153 to 203
+# start_count_four = "153"
+# HEADERS_four = HEADERS.copy()
+# HEADERS_four['start'] = start_count_four
+
+# four = requests.get(url, headers=HEADERS_four)
+
+
+# #204 to 254
+# start_count_five = "204"
+# HEADERS_five = HEADERS.copy()
+# HEADERS_five['start'] = start_count_five
+
+# five = requests.get(url, headers=HEADERS_five)
+
+
+# #305 to 355
+# start_count_six = "305"
+# HEADERS_six = HEADERS.copy()
+# HEADERS_six['start'] = start_count_six
+
+# six = requests.get(url, headers=HEADERS_six)
+
+
+# #356 to 406
+# start_count_seven = "356"
+# HEADERS_seven = HEADERS.copy()
+# HEADERS_seven['start'] = start_count_seven
+
+# seven = requests.get(url, headers=HEADERS_seven)
+
+
+# #407 to 457
+# start_count_eight = "407"
+# HEADERS_eight = HEADERS.copy()
+# HEADERS_eight['start'] = start_count_eight
+
+# eight = requests.get(url, headers=HEADERS_eight)
+
+
+# #458 to 508 - there are 468 parks as per the API
+# start_count_nine = "458"
+# HEADERS_nine = HEADERS.copy()
+# HEADERS_nine['start'] = start_count_nine
+
+
+
+
+# Boston AFrican American Naitonal Historic Site

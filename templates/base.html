@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title> 
+            {% block title %} {% endblock %}
+        </title>
+        
+        <link rel="stylesheet" href="/static/css/maps.css"/>
+        <link rel="stylesheet" href="/static/css/navigation.css"/>
+    </head>
+
+    <body>
+        {% for msg in get_flashed_messages() %}
+        <p class="flash-msg">
+            {{ msg }} 
+        </p>
+        {% endfor %}
+
+        <div id="navigation"> 
+
+            <a href="/" id="home"> Home</a>
+             | 
+            <a href="/login" id="login"> Login</a>
+             | 
+            <a href="/profile" id="my_profile"> My Profile </a>
+             | 
+            <a href="/logout" id="logout"> Logout </a>
+
+        </div>
+
+        {% block body %} {% endblock %}
+    
+        <script src="/static/js/logout.js"></script>
+    
+    </body>
+</html>
