@@ -1,6 +1,6 @@
 """Server for National Parks app"""
 
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 
 from pprint import pformat, pprint
 import os
@@ -19,6 +19,22 @@ app.jinja_env.undefined = StrictUndefined
 
 
 #######################################################################################################
+
+### Dictionary for state codes: state names
+
+states_dict = {'AK': 'Alaska', 'AR': 'Arkansas', 'AZ': 'Arizona', 'CA': 'California', 
+          'CO': 'Colorado', 'DC': 'Washington DC', 'FL': 'Florida', 'HI': 'Hawaii', 
+          'ID': 'Idaho', 'IN': 'Indiana', 'KY': 'Kentucky', 'MD': 'Maryland', 
+          'ME': 'Maine', 'MI': 'Michigan', 'MN': 'Minnesota', 'MO': 'Missouri', 
+          'MP': 'Northern Mariana Islands', 'MT': 'Montana', 'NC': 'North Carolina', 
+          'ND': 'North Dakota', 'NM': 'New Mexico', 'NV': 'Nevada', 'OH': 'Ohio', 
+          'OR': 'Oregon', 'SC': 'South Carolina', 'SD': 'South Dakota', 'TN': 'Tennessee', 
+          'TX': 'Texas', 'UT': 'Utah', 'VA': 'Virginia', 'VI': 'Virgin Islands', 
+          'WA': 'Washington', 'WY': 'Wyoming'}
+
+
+#######################################################################################################
+
 
 API_KEY = os.environ['NPS_KEY']
 base_url = 'developer.nps.gov/api/v1'
@@ -39,11 +55,22 @@ data = res.json()
 parks = data['data']
 parks_count = len(parks)
 
+categories = ["National and State Parks", "National Park", "Park", "National Parks"]
+national_parks = []
+
+for park in parks:
+    if park['designation'] in categories:
+        national_parks.append(park)
+
+print(len(national_parks)) #includes total 64 national parks
+
 
 parks_data = []
 count = 0
 
 def check_lat(park):
+    """ Check for missing latitude information and assign its value as 0.0 """
+    
     if park['latitude'] == "":
         latitude = 0.0
     else:
@@ -51,7 +78,10 @@ def check_lat(park):
     
     return latitude
 
+
 def check_long(park):
+    """ Check for missing latitude information and assign its value as 0.0 """
+
     if park['longitude'] == "":
         longitude = 0.0
     else:
@@ -60,14 +90,57 @@ def check_long(park):
     return longitude
 
 
-for park in parks:
+def get_activity_list(park):
+    """ Get a list of topics for each park """
 
+    activities = []
+    for activity in park['activities']:
+        activities.append(activity['name'])
+    
+    return activities
+
+
+def get_topic_list(park):
+    """ Get a list of topics for each park """
+
+    topics = []
+    for topic in park['topics']:
+        topics.append(topic['name'])
+    
+    return topics
+
+
+def get_state_name(state_code_list):
+    """ Get state names based on state codes """
+    state_names = []
+    for state_code in state_code_list:
+        state_names.append(states_dict[state_code])
+    
+    return state_names
+
+def create_park_state_dict(state_code_list):
+    """ Create a list of dictionaries based on list of state codes obtained """
+
+    states = {}
+
+    for state_code in state_code_list:
+        states[state_code] = states_dict[state_code]
+            
+    return states
+    
+
+
+for park in national_parks:
 
     park_dict = {'park_name': park['fullName'],
                 'park_code': park['parkCode'],
+                'designation': park['designation'],
                 'general_info': park['description'],
                 'location_lat': check_lat(park),
                 'location_long': check_long(park),
+                'states': create_park_state_dict(park['states'].split(",")),
+                'activities': get_activity_list(park),
+                'topics': get_topic_list(park),
                 'park_count': count + 1
                 }
     count += 1
@@ -83,6 +156,7 @@ json.dump(parks_data, open('data/parks.json','w'), indent=2)
 
 
 #######################################################################################################
+
 
 
 @app.route("/")
@@ -158,13 +232,28 @@ def search_form():
     """ Show the search form """
 
     park_names = crud.get_park_names()
+    all_states_names = crud.get_all_states()
+    all_activities = crud.get_all_activities()
+    all_topics = crud.get_all_topics()
+
+    # print("########", all_states)
 
     # name = request.args.get('search')
     # park = crud.get_park_by_name(name)
 
     # return render_template("park_details.html", park=park)
 
-    return render_template("search.html", park_names=park_names)
+    # getting names of states on the basis of state codes from 'states' dicitonary above
+    # all_states = []
+    # for state_code in all_states_codes:
+    #     all_states.append(states_dict[state_code])
+
+
+    return render_template("search.html", 
+                           park_names=park_names, 
+                           all_states=all_states_names,
+                           all_activities=all_activities,
+                           all_topics=all_topics)
 
 
 
@@ -174,10 +263,120 @@ def search_result():
 
     # park_names = crud.get_park_names()
 
-    park_name = request.args.get('park', "")
+    park_name = request.args.get("park_name", "")
+    print("############### park_name = ", park_name)
     park = crud.get_park_by_name(park_name)
 
     return render_template("park_details.html", park=park)
+
+
+
+@app.route("/search/advance_search_result")
+def advance_search_result():
+    """ Show the result for advance search on a new page """
+
+    park_names = crud.get_park_names()
+    all_states_names = crud.get_all_states()
+    all_activities = crud.get_all_activities()
+    all_topics = crud.get_all_topics()
+
+    state_name = request.args.get("state", "")
+    activities = request.args.getlist("activity")
+    topics = request.args.getlist("topic")
+    response = True
+
+    print("######## state = ", state_name)
+    print("######## activities = ", activities)
+    print("######## topics = ", topics)
+
+    if state_name == "" and len(activities) == 0 and len(topics) == 0:
+       response = False
+       result = "Please select a filter"
+    else:
+        parks = crud.get_matching_parks(state_name, activities, topics)
+        print("####### parks", parks)
+        if len(parks) == 0:
+            response = False
+            result = "No parks available"
+        else:
+            result = parks
+    
+    print("######## result = ", result)
+    
+
+    return render_template("advance-search-result.html", 
+                           response=response,
+                           result=result,
+                           park_names=park_names, 
+                           all_states=all_states_names,
+                           all_activities=all_activities,
+                           all_topics=all_topics)
+
+
+
+@app.route("/api/search/advance_search_result/ajax", methods=["POST"])
+def advance_search_result_ajax():
+    """ Show the result for advance search """
+
+    # park_names = crud.get_park_names()
+    # all_states = crud.get_all_states()
+    # all_activities = crud.get_all_activities()
+    # all_topics = crud.get_all_topics()
+
+    state = request.json.get("state")
+    activities = request.json.get("activities")
+    topics = request.json.get("topics")
+    response = True
+
+    # all_parks = crud.get_parks()
+    # all_park_states = crud.get_all_park_states
+
+    # for park in all_parks:
+    #     for state in park.states.state_code:
+    #         if state in selected_state:
+    #             pass
+    #     for activity in park.activities.activity:
+    #         if activity in selected_activities:
+    #             pass
+    #     for topic in park.topics.topic:
+    #         if topic in selected_topics:
+
+    if state == "" and len(activities) == 0 and len(topics) == 0:
+       response = False
+       result = "Please select a filter" 
+    else:
+        parks = crud.get_matching_parks(state, activities, topics)
+        if len(parks) == 0:
+            response = False
+            result = "No parks available"
+        else:
+            result_object = parks
+
+            result = []
+            for park in result_object:
+                park_dict = {}
+                park_dict['park_id'] = park.id
+                park_dict['park_name'] = park.park_name
+                park_dict['park_lat'] = park.location_lat
+                park_dict['park_long'] = park.location_long
+                result.append(park_dict)
+    
+            #     result.append(park.toDict())
+
+    return jsonify({'response': response,
+                    'result': result})
+    # return render_template("advance-search-result.html",
+    #                        response=response,
+    #                        result=result,
+    #                        park_names=park_names, 
+    #                        all_states=all_states,
+    #                        all_activities=all_activities,
+    #                        all_topics=all_topics)
+    # return render_template("advance-search-ajax-result.html",
+    #                        response=response,
+    #                        result=result)
+
+
     
 
 @app.route("/login")
@@ -189,6 +388,7 @@ def login_form():
         return redirect (request.referrer)
     else:
         return render_template("log-in.html")
+
 
 
 @app.route("/login", methods=["POST"])

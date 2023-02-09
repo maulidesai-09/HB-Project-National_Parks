@@ -15,22 +15,52 @@ server.app.app_context().push()
 model.db.create_all()
 
 
-### Creating parks using CRUD function ###
+### Creating parks, park states, park activities, park topics, using CRUD function ###
 
 with open('data/parks.json') as f:
     parks_data = json.loads(f.read())
 
+# parks_in_db = []
+
+# for park in parks_data:
+#     park_code = park['park_code']
+#     park_name = park['park_name']
+#     general_info = park['general_info']
+#     history = '*** history pending ***'
+#     main_attractions = '*** main_attractions pending ***'
+#     trails = '*** trails pending ***'
+#     location_lat = park['location_lat']
+#     location_long = park['location_long']
+
+#     # if park['location_lat'] == "":
+#     #     location_lat = 0.0
+#     # else:
+#     #     location_lat = float((park['location_lat']).strip())
+    
+#     # if park['location_long'] == "":
+#     #     location_long = 0.0
+#     # else:
+#     #     location_long = float((park['location_long']).strip())
+
+#     db_park = crud.create_park(park_code, park_name, general_info, history, 
+#                                main_attractions, trails, location_lat, location_long)
+#     parks_in_db.append(db_park)
+
+# model.db.session.add_all(parks_in_db)
+# model.db.session.commit()
+
+
 parks_in_db = []
 
-for park in parks_data:
-    park_code = park['park_code']
-    park_name = park['park_name']
-    general_info = park['general_info']
+for ind_park in parks_data:
+    park_code = ind_park['park_code']
+    park_name = ind_park['park_name']
+    general_info = ind_park['general_info']
     history = '*** history pending ***'
     main_attractions = '*** main_attractions pending ***'
     trails = '*** trails pending ***'
-    location_lat = park['location_lat']
-    location_long = park['location_long']
+    location_lat = ind_park['location_lat']
+    location_long = ind_park['location_long']
 
     # if park['location_lat'] == "":
     #     location_lat = 0.0
@@ -42,12 +72,52 @@ for park in parks_data:
     # else:
     #     location_long = float((park['location_long']).strip())
 
-    db_park = crud.create_park(park_code, park_name, general_info, history, 
+    db_ind_park = crud.create_park(park_code, park_name, general_info, history, 
                                main_attractions, trails, location_lat, location_long)
-    parks_in_db.append(db_park)
+    parks_in_db.append(db_ind_park)
+    model.db.session.add(db_ind_park)
 
-model.db.session.add_all(parks_in_db)
+
+    for state in ind_park['states']:
+        park = db_ind_park
+        state_code = state
+        state_name = ind_park['states'][state_code]
+        db_park_state = crud.create_park_state(park, state_code, state_name)
+        model.db.session.add(db_park_state)
+    
+
+    for ind_activity in ind_park['activities']:
+        park = db_ind_park
+        activity = ind_activity
+        db_park_activity = crud.create_park_activity(park, activity)
+        model.db.session.add(db_park_activity)
+    
+
+    for ind_topic in ind_park['topics']:
+        park = db_ind_park
+        topic = ind_topic
+        db_park_topic = crud.create_park_topic(park, topic)
+        model.db.session.add(db_park_topic)
+
+
+# model.db.session.add_all(parks_in_db)
 model.db.session.commit()
+
+
+### Creating data for Park_State using CRUD functions ###
+
+# park_states_in_db = []
+
+# for park in parks_data:
+#     for state in park['states']:
+#         park = park
+#         state_code = state
+    
+#         db_park_state = crud.create_park_state(park, state_code)
+#         park_states_in_db.append(db_park_state)
+
+# model.db.session.add_all(park_states_in_db)
+# model.db.session.commit()
 
 
 

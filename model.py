@@ -10,7 +10,7 @@ class Park(db.Model):
     __tablename__ = "parks"
 
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    park_code = db.Column(db.String(4), nullable = False, unique = True)
+    park_code = db.Column(db.String, nullable = False, unique = True)
     park_name = db.Column(db.String, nullable = False, unique = True)
     general_info = db.Column(db.Text)
     history = db.Column(db.Text)
@@ -21,12 +21,71 @@ class Park(db.Model):
 
     favorites = db.relationship("User_Favorite", back_populates = "park")
     wishlists = db.relationship("User_Wishlist", back_populates = "park")
+    states = db.relationship("Park_State", back_populates = "park")
+    activities = db.relationship("Park_Activity", back_populates = "park")
+    topics = db.relationship("Park_Topic", back_populates = "park")
 
 
     def __repr__(self):
         """ Show info about park """
 
         return f'<Park_id = {self.id} Park_name = {self.park_name}>'
+
+
+
+class Park_State(db.Model):
+    """ Information about states for each park """
+
+    __tablename__ = "park_states"
+
+    park_state_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
+    # park_name = db.Column(db.String, db.ForeignKey("parks.park_name"))
+    state_code = db.Column(db.String, nullable = False)
+    state_name = db.Column(db.String, nullable = False)
+
+    park = db.relationship("Park", back_populates = "states")
+
+    def __repr__(self):
+        """ Show info about park_state"""
+
+        return f'<park_state_id = {self.park_state_id} park_id = {self.park_id} state_code = {self.state_code}>'
+
+
+
+class Park_Activity(db.Model):
+    """Information about activities in each park """
+
+    __tablename__ = "park_activities"
+
+    park_activity_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
+    activity = db.Column(db.String, nullable = False)
+
+    park = db.relationship("Park", back_populates = "activities")
+
+    def __repr__(self):
+        """ Show info about park_activity """
+
+        return f'<park_activity_id = {self.park_activity_id} park_id = {self.park_id} activity = {self.activity}>'
+
+
+
+class Park_Topic(db.Model):
+    """ Information about topics for each park """
+
+    __tablename__ = "park_topics"
+
+    park_topic_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
+    topic = db.Column(db.String, nullable = False)
+
+    park = db.relationship("Park", back_populates = "topics")
+
+    def __repr__(self):
+        """ Show info about park_topic """
+
+        return f'<park_topic_id = {self.park_topic_id} park_id = {self.park_id} activity = {self.topic}>'
 
 
 

@@ -1,4 +1,4 @@
-// JS for Google Maps
+// JS for Google Maps to be displayed on Park Details page
 
 function initMap() {
 

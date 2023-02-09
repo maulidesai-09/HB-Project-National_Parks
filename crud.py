@@ -1,6 +1,6 @@
 """ CRUD operations """
 
-from model import db, Park, User, User_Favorite, User_Wishlist, connect_to_db
+from model import db, Park, Park_State, Park_Activity, Park_Topic, User, User_Favorite, User_Wishlist, connect_to_db
 
 def create_park(park_code, park_name, general_info, history, main_attractions,
                  trails, location_lat, location_long):
@@ -50,6 +50,117 @@ def get_park_names():
     
     return park_names
 
+
+
+def create_park_state(park, state_code, state_name):
+    """ Create the data for states for each park """
+
+    park_state = Park_State(park = park, 
+                            state_code = state_code,
+                            state_name = state_name)
+    
+    return park_state
+
+
+
+def get_all_park_states():
+    """ Returns a list of all park_states objects """
+
+    return Park_State.query.all()
+
+
+
+def get_all_states():
+    """ Returns a list of all states """
+
+    park_states = Park_State.query.all()
+
+    all_states = []
+
+    for park in park_states:
+        if not park.state_name in all_states:
+            all_states.append(park.state_name)
+    
+
+    all_states = sorted(all_states)
+    
+    return all_states
+
+
+
+def create_park_activity(park, activity):
+    """ Create the data for activities for each park """
+
+    park_activity = Park_Activity(park = park,
+                                  activity = activity)
+    
+    return park_activity
+
+
+
+def get_all_activities():
+    """ Returns a list of all activities """
+
+    parks_activities = Park_Activity.query.all()
+    all_activities = []
+
+    for park in parks_activities:
+        if not park.activity in all_activities:
+            all_activities.append(park.activity)
+    
+    all_activities = sorted(all_activities)
+    
+    return all_activities
+
+
+
+def create_park_topic(park, topic):
+    """ Create the data for topics for each park """
+
+    park_topic = Park_Topic(park = park,
+                            topic = topic)
+    
+    return park_topic
+
+
+
+def get_all_topics():
+    """ Returns a list of all topics """
+
+    park_topics = Park_Topic.query.all()
+    all_topics = []
+
+    for park in park_topics:
+        if not park.topic in all_topics:
+            all_topics.append(park.topic)
+    
+    all_topics = sorted(all_topics)
+
+    return all_topics
+
+
+
+def get_matching_parks(state_name, activities, topics):
+    """" Returns parks that match the given state, activities, topics """
+
+    all_filters = []
+    if state_name != "":
+        all_filters.append(Park_State.state_name == state_name)
+    if len(activities) > 0:
+        all_filters.append(Park_Activity.activity.in_(activities))
+    if len(topics) > 0:
+        all_filters.append(Park_Topic.topic.in_(topics))
+    
+    # print("########### all_filters = ", all_filters)
+
+    all_parks = (db.session.query(Park)
+                 .join(Park_State)
+                 .join(Park_Activity)
+                 .join(Park_Topic)
+                 .filter(*all_filters) #'*' is used to unpack arrays
+                 ).all()
+    
+    return all_parks
 
 
 def create_user(fname, lname, email, password):

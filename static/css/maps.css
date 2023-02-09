@@ -6,6 +6,12 @@ html, body {
   
   .map,
   #map {
-    width: 50%;
-    height: 70%;
+    width: 70%;
+    height: 80%;
+  }
+
+  .result .map,
+  #map {
+    width: 70%;
+    height: 80%;
   }

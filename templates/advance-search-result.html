@@ -24,14 +24,14 @@
     </div>
 
 
-    <form class="form" method="GET" action="/search/advance_search_result">
+    <form class="form" method="GET" action="/search/result">
         <h2> Search </h2>
 
         <div class="form-container-state">
             <!-- <form class="form-state" method="GET" action="/search/result"> -->
                 <p>
                     By State <select name="state" class="state-name" placeholder="Select a state..">
-                        <option id="default-option-state" value="">Select a state..</option>
+                        <option id="default-option-state" value=""> Select a state.. </option>
                         {% for state in all_states %}
                             <option id="selected-state" value="{{ state }}"> {{ state }} </option>
                         {% endfor %}
@@ -49,53 +49,7 @@
                 {% endfor %}
             </p>
         </div>
-        
         ORIGINAL CODE (WITHOUT DROPDOWN MENU) ENDS -->
-
-        <!-- <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-            data-mdb-toggle="dropdown" aria-expanded="false">
-            Select activity
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for activity in all_activities %}
-                <li>
-                    <a class="dropdown-item" href="#">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{ activity }}" id="{{ activity }}"/>
-                            <label class="form-check-label" for="{{ activity }}"> {{ activity }} </label>
-                        </div>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div> -->
-
-
-        <!-- <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                <div class="button-group">
-                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        Activity
-                    <span class="glyphicon glyphicon-cog"></span>
-                    <span class="caret"></span>
-                    </button>
-
-                    <ul class="dropdown-menu">
-                        {% for activity in all_activities %}
-                        <li>
-                            <a href="#" class="small" data-value="{{ activity }}" tabIndex="-1">
-                                <input type="checkbox"/>&nbsp;{{ activity }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                </div>
-            </div>
-        </div> -->
-
 
 
         <div class="dropdown activity">
@@ -114,17 +68,19 @@
             </ul>
         </div>
 
-        <!-- ORIGINAL CODE (WITHOUT DROPDOWN MENU)
+
+<!-- 
+        ORIGINAL CODE (WITHOUT DROPDOWN MENU)
         <div class="form-container-topic">
             <p>
                 By Topic: <br>
                 {% for topic in all_topics[:5] %}
-                     <input type="checkbox" class="checkbox-topic" name="topic" value="{{ topic }}"> {{ topic }} <br>
+                     <input type="checkbox" class="checkbox-topic" name="topic" value="{{ topic }}"> {{ topic }} </input> <br>
                 {% endfor %}
             </p>
         </div>
         ORIGINAL CODE (WITHOUT DROPDOWN MENU) ENDS -->
-        
+
 
         <div class="dropdown topic">
             <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -143,18 +99,52 @@
         </div>
 
 
-
         <div class="form-container-submit">
             <p>
-                <input type="submit" name="search" id="search" value="Submit"> 
-                <!-- <button name="clear" id="clear"> Clear </button> -->
+                <button id="search"> Search </button>
+                <button id="clear"> Clear </button>
             </p>
         </div>
     
     </form>
 
 
+    <h2> Search Results: </h2> 
+
+    <div class="result">
+
+        {% if response %}
+            <ul>
+                {% for park in result %}
+                    <div class="result-park">
+                        <li class="li"><a href="/parks/{{ park.id }}"> {{ park.park_name }} </a></li>
+                        <p class="lat" hidden> {{ park.location_lat }} </p>
+                        <p class="long" hidden> {{ park.location_long }} </p>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p> {{ result }} </p>
+        {% endif %}
+        
+    </div>
+
+
+    <p>
+        <b> Location: </b>
+    </p>
+
+    <section class="map">
+        <div id="map"></div>
+    </section>
+
+
+    <script src="/static/js/maps-search.js"></script>
+    <script
+        async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMiuAyoo-rGsBKsjt_Qav5rRB-xX7N87k&callback=initMap">
+    </script>
     <script src="/static/js/search.js"> </script>
+    <!-- <script src="/static/js/advance-search.js"> </script> -->
 
 {% endblock %}
-    
