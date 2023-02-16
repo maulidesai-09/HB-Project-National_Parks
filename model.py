@@ -21,6 +21,7 @@ class Park(db.Model):
 
     favorites = db.relationship("User_Favorite", back_populates = "park")
     wishlists = db.relationship("User_Wishlist", back_populates = "park")
+    trips = db.relationship("User_Trip", back_populates = "park")
     states = db.relationship("Park_State", back_populates = "park")
     activities = db.relationship("Park_Activity", back_populates = "park")
     topics = db.relationship("Park_Topic", back_populates = "park")
@@ -102,6 +103,8 @@ class User(db.Model):
 
     favorites = db.relationship("User_Favorite", back_populates = "user")
     wishlists = db.relationship("User_Wishlist", back_populates = "user")
+    trips = db.relationship("User_Trip", back_populates = "user")
+    trip_attractions = db.relationship("Trip_Attraction", back_populates = "user")
 
 
     def __repr__(self):
@@ -146,6 +149,52 @@ class User_Wishlist(db.Model):
         """ Show info about park added to user's wishlist """
 
         return f'<User_wishlist id = {self.id} User_id = {self.user_id} Park_id = {self.park_id}>'
+
+
+
+class User_Trip(db.Model):
+    """ Information about trips added to user's trip list """
+
+    __tablename__ = "user_trips"
+
+    id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    trip_name = db.Column(db.String)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    notes = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
+
+    user = db.relationship("User", back_populates = "trips")
+    park = db.relationship("Park", back_populates = "trips")
+    trip_attractions = db.relationship("Trip_Attraction", back_populates = "trip")
+
+    def __repr__(self):
+        """ Show info about trip added to user's list """
+
+        return f'<User-trip id = {self.id} User_id = {self.user_id} Park_id = {self.park_id}>'
+
+
+
+class Trip_Attraction(db.Model):
+    """ Information about attractions added to a trip selected by the user """
+
+    __tablename__ = "trip_attractions"
+
+    id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    attraction_id_api = db.Column(db.String)
+    attraction_name = db.Column(db.String)
+    trip_id = db.Column(db.Integer, db.ForeignKey("user_trips.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+
+    trip = db.relationship("User_Trip", back_populates = "trip_attractions")
+    user = db.relationship("User", back_populates = "trip_attractions")
+
+    def __repr__(self):
+        """ Show info about attractions added to a trip """
+
+        return f'<Attraction-id = {self.id} User-trip id = {self.trip_id} User_id = {self.user_id} Attraction_name = {self.attraction_name}>'
+    
     
 
     

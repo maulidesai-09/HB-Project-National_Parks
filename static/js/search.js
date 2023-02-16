@@ -2,24 +2,46 @@
 
 const park_name_element = document.querySelector("#park-name")
 
+// park_name_element.addEventListener('change', (evt) => {
+//     evt.preventDefault()
+
+//     const selected_park_name = park_name_element.value
+//     let url = ""
+
+//     console.log(selected_park_name)
+
+//     if (selected_park_name == "Select a park..") {
+//         url = '/search'
+//     } else {
+//         url = `/search/result?park_name=${selected_park_name}`
+//     }
+
+//     console.log(url)
+
+//     window.location.href = url
+// })
+
+
 park_name_element.addEventListener('change', (evt) => {
     evt.preventDefault()
 
-    const selected_park_name = park_name_element.value
+    const selected_park_id = park_name_element.value
     let url = ""
 
-    console.log(selected_park_name)
+    console.log(selected_park_id)
 
-    if (selected_park_name == "Select a park..") {
+    if (selected_park_id == "Select a park..") {
         url = '/search'
     } else {
-        url = `/search/result?park_name=${selected_park_name}`
+        // url = `/search/result?park_name=${selected_park_id}`
+        url = `/parks/${selected_park_id}`
     }
 
     console.log(url)
 
     window.location.href = url
 })
+
 
 
 // JS for dropdown checkbox for activities

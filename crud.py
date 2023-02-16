@@ -1,6 +1,7 @@
 """ CRUD operations """
 
-from model import db, Park, Park_State, Park_Activity, Park_Topic, User, User_Favorite, User_Wishlist, connect_to_db
+from model import db, Park, Park_State, Park_Activity, Park_Topic, User, User_Favorite, User_Wishlist, User_Trip, Trip_Attraction, connect_to_db
+from datetime import datetime
 
 def create_park(park_code, park_name, general_info, history, main_attractions,
                  trails, location_lat, location_long):
@@ -29,6 +30,8 @@ def get_parks():
 def get_park_by_id(id):
     """ Returns a park with given id """
 
+    id = int(id)
+
     return Park.query.get(id)
 
 def get_park_by_name(name):
@@ -52,6 +55,21 @@ def get_park_names():
 
 
 
+def get_park_code_by_id(id):
+    """ Return a park code for the park with given park id """
+
+    id = int(id)
+    parks = Park.query.all()
+
+    park_code = None
+
+    for park in parks:
+        if park.id == id:
+            park_code = park.park_code
+
+    return park_code
+
+
 def create_park_state(park, state_code, state_name):
     """ Create the data for states for each park """
 
@@ -70,7 +88,7 @@ def get_all_park_states():
 
 
 
-def get_all_states():
+def get_all_states_names():
     """ Returns a list of all states """
 
     park_states = Park_State.query.all()
@@ -297,6 +315,78 @@ def get_user_wish_to_be_removed(user_id, park_id):
     return wish_remove
 
 
+
+def create_user_trip(trip_name, start_date, end_date, notes, user, park):
+    """ Create and return a new trip to be added to user's trips """
+
+    # start_date = datetime.strptime(str(start_date), '%Y-%m-%d')
+    # end_date = datetime.strptime(str(start_date), '%Y-%m-%d')
+
+    # start_date = datetime.date(start_date)
+    # end_date = datetime.date(end_date)
+
+    user_trip = User_Trip(trip_name=trip_name,
+                          start_date = start_date,
+                          end_date = end_date,
+                          notes = notes,
+                          user=user, 
+                          park=park)
+    
+    return user_trip
+
+
+
+def get_trip_by_id(trip_id):
+    """ Returns a trip with given id """
+
+    trip = User_Trip.query.filter_by(id = trip_id).one()
+
+    return trip
+
+
+
+def get_trips_by_user(user_id):
+    """ Returns a list of trips saved in a user's list"""
+
+    user_trips = User_Trip.query.filter_by(user_id = user_id).all()
+
+    return user_trips
+
+
+
+def get_user_trip_by_user_and_id(user_id, trip_id):
+    """ Returns a trip to be removed from user's list """
+
+    trip_id = int(trip_id)
+
+    user_trips = User_Trip.query.filter_by(user_id = user_id).all()
+
+    for trip in user_trips:
+        if trip.user_id == user_id and trip.id == trip_id:
+            trip_remove = trip
+    
+    return trip_remove
+
+
+
+def create_trip_attraction(attraction_id_api, attraction_name, trip, user):
+    """ Creates attraction for a trip """
+
+    trip_attraction = Trip_Attraction(attraction_id_api = attraction_id_api,
+                                      attraction_name = attraction_name,
+                                      trip = trip,
+                                      user = user)
+    
+    return trip_attraction
+
+
+
+def get_attractions_for_trip(trip_id):
+    """ Get all selected attractions for a given trip id """
+
+    trip_attractions = Trip_Attraction.query.filter_by(trip_id = trip_id).all()
+
+    return trip_attractions
 
 
 

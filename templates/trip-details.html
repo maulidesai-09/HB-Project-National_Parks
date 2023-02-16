@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %} View Trip Details {% endblock %}
+
+{% block body %}
+
+    <form class="edit-trip-form" method="GET" action="/trip/{{ trip.id }}/edit_trip">
+
+        <h2> {{ trip.trip_name }} </h2>
+
+        <br>
+
+        <div> <b> Dates: </b> {{ trip.start_date }} to {{ trip.end_date }} </div>
+
+
+        <br>
+
+        <div id="park"> 
+            <b> Park: </b>
+                <a id="park-link" href="/parks/{{ trip.park.id }}"> {{ trip.park.park_name }} </a>
+                <div id="park_id" hidden> {{ trip.park.id }} </div>
+        </div>
+
+        <br>
+
+        <div id="#trip-attractions">
+            <b> Things to do: </b>
+            <ul>
+                {% for attraction in trip_attractions_objects %}
+                <li>
+                    <a href="" class="attraction" id="{{ attraction.id }}"> 
+                        {{ attraction.attraction_name }}
+                    </a>
+                    <div class="result_attraction_details" id="result_{{ attraction.id }}"> </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <br>
+
+        <div> <b> Notes: </b>
+            <div id="notes"> {{ trip.notes }} </div>
+        </div>
+
+        <br>
+
+        <div id="edit-trip-submit">
+            <input type="submit" id="edit-trip" name="edit-trip" value="Edit Trip">
+        </div>
+    
+    </form>
+    
+
+    <script src="/static/js/trip-details.js"> </script>
+
+{% endblock%}
+
+
+

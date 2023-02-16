@@ -180,8 +180,170 @@ def show_park_details(id):
     """ Show details of a particular park """
 
     park = crud.get_park_by_id(id)
+    park_code = park.park_code
 
-    return render_template("park_details.html", park=park)
+    ### Get Main Attractions/ Things To Do from API 
+    
+    url = "https://developer.nps.gov/api/v1/thingstodo"
+    payload = {"api_key": API_KEY}
+    payload['parkCode'] = park_code
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    things_to_do = data['data']
+
+    def get_activity_list(thing):
+        """ Get a list of activities for each main attraction """
+
+        activities = []
+        for activity in thing['activities']:
+            activities.append(activity['name'])
+        
+        return activities
+    
+    def get_topic_list(thing):
+        """ Get a list of topics for each main attraction """
+
+        topics = []
+        for topic in thing['topics']:
+            topics.append(topic['name'])
+        
+        return topics
+    
+
+    def get_images_list(thing):
+        """ Get a list of images for each main attraction """
+
+        images = []
+        for image in thing['images']:
+            images.append(image['url'])
+        
+        return images
+    
+
+    main_attractions = []
+    
+    for thing in things_to_do:
+        attraction = {}
+        attraction['id'] = thing['id']
+        attraction['title'] = thing['title']
+        attraction['short_description'] = thing['shortDescription']
+        attraction['location'] = thing['location']
+        attraction['long_description'] = thing['longDescription']
+        attraction['activities'] = get_activity_list(thing)
+        attraction['topics'] = get_topic_list(thing)
+        attraction['images'] = get_images_list(thing)
+        main_attractions.append(attraction)
+    
+
+    ### Get Alerts from API
+
+    url = "https://developer.nps.gov/api/v1/alerts"
+    payload = {"api_key": API_KEY}
+    payload['parkCode'] = park_code
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    alerts_api = data['data']
+
+    alerts = []
+    for item in alerts_api:
+        alert = {}
+        alert['id'] = item['id']
+        alert['url'] = item['url']
+        alert['title'] = item['title']
+        alert['description'] = item['description']
+        alert['lastIndexedDate'] = item['lastIndexedDate']
+        alerts.append(alert)
+
+
+    return render_template("park_details.html", 
+                           park=park, 
+                           main_attractions=main_attractions, 
+                           alerts = alerts)
+
+
+
+@app.route("/api/parks/<id>/main-attractions/ajax")
+def get_details_of_main_attractions(id):
+    """ Get details of main attractions to be sent via ajax response """
+
+    print("#############id = ", id)
+    print("#############id type = ", type(id))
+
+    park = crud.get_park_by_id(id)
+    park_code = park.park_code
+
+    attraction_title = request.args.get("title", "").strip()
+
+    print("#############title = ", attraction_title)
+
+
+    url = "https://developer.nps.gov/api/v1/thingstodo"
+    payload = {"api_key": API_KEY}
+    payload['parkCode'] = park_code
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    things_to_do = data['data']
+
+    def get_activity_list(thing):
+        """ Get a list of activities for each main attraction """
+
+        activities = []
+        for activity in thing['activities']:
+            activities.append(activity['name'])
+        
+        return activities
+    
+    def get_topic_list(thing):
+        """ Get a list of topics for each main attraction """
+
+        topics = []
+        for topic in thing['topics']:
+            topics.append(topic['name'])
+        
+        return topics
+    
+
+    def get_images_list(thing):
+        """ Get a list of images for each main attraction """
+
+        images = []
+        for image in thing['images']:
+            images.append(image['url'])
+        
+        return images
+    
+
+    main_attractions = []
+    
+    for thing in things_to_do:
+        attraction = {}
+        attraction['id'] = thing['id']
+        attraction['title'] = thing['title']
+        attraction['short_description'] = thing['shortDescription']
+        attraction['location'] = thing['location']
+        attraction['long_description'] = thing['longDescription']
+        attraction['activities'] = get_activity_list(thing)
+        attraction['topics'] = get_topic_list(thing)
+        attraction['images'] = get_images_list(thing)
+        main_attractions.append(attraction)
+
+    
+    for attraction in main_attractions:
+        if attraction['title'] == attraction_title:
+            result_attraction = attraction
+    
+    print("######### result attractions = ", result_attraction)
+
+    # return jsonify({'result': result_attraction})
+    
+    return render_template("park_details-main_attractions.html", result = result_attraction)
+    
+    
+
+
 
 
 @app.route("/users")
@@ -232,11 +394,12 @@ def search_form():
     """ Show the search form """
 
     park_names = crud.get_park_names()
-    all_states_names = crud.get_all_states()
+    all_parks = crud.get_parks()
+    all_states_names = crud.get_all_states_names()
     all_activities = crud.get_all_activities()
     all_topics = crud.get_all_topics()
 
-    # print("########", all_states)
+    print("########", all_states_names)
 
     # name = request.args.get('search')
     # park = crud.get_park_by_name(name)
@@ -250,24 +413,101 @@ def search_form():
 
 
     return render_template("search.html", 
-                           park_names=park_names, 
+                           all_parks = all_parks, 
                            all_states=all_states_names,
                            all_activities=all_activities,
                            all_topics=all_topics)
 
 
 
-@app.route("/search/result")
-def search_result():
-    """ Show the search results """
+# @app.route("/search/result")
+# def search_result():
+#     """ Show the search results """
 
-    # park_names = crud.get_park_names()
+#     # park_names = crud.get_park_names()
 
-    park_name = request.args.get("park_name", "")
-    print("############### park_name = ", park_name)
-    park = crud.get_park_by_name(park_name)
+#     park_name = request.args.get("park_name", "")
+#     print("############### park_name = ", park_name)
+#     park = crud.get_park_by_name(park_name)
+#     park_code = park.park_code
 
-    return render_template("park_details.html", park=park)
+#     ### Get Main Attractions/ Things To Do from API 
+    
+#     url = "https://developer.nps.gov/api/v1/thingstodo"
+#     payload = {"api_key": API_KEY}
+#     payload['parkCode'] = park_code
+
+#     res = requests.get(url, params=payload)
+#     data = res.json()
+#     things_to_do = data['data']
+
+#     def get_activity_list(thing):
+#         """ Get a list of activities for each main attraction """
+
+#         activities = []
+#         for activity in thing['activities']:
+#             activities.append(activity['name'])
+        
+#         return activities
+    
+#     def get_topic_list(thing):
+#         """ Get a list of topics for each main attraction """
+
+#         topics = []
+#         for topic in thing['topics']:
+#             topics.append(topic['name'])
+        
+#         return topics
+    
+
+#     def get_images_list(thing):
+#         """ Get a list of images for each main attraction """
+
+#         images = []
+#         for image in thing['images']:
+#             images.append(image['url'])
+        
+#         return images
+    
+
+#     main_attractions = []
+    
+#     for thing in things_to_do:
+#         attraction = {}
+#         attraction['id'] = thing['id']
+#         attraction['title'] = thing['title']
+#         attraction['short_description'] = thing['shortDescription']
+#         attraction['location'] = thing['location']
+#         attraction['long_description'] = thing['longDescription']
+#         attraction['activities'] = get_activity_list(thing)
+#         attraction['topics'] = get_topic_list(thing)
+#         attraction['images'] = get_images_list(thing)
+#         main_attractions.append(attraction)
+
+#     ### Get Alerts from API
+
+#     url = "https://developer.nps.gov/api/v1/alerts"
+#     payload = {"api_key": API_KEY}
+#     payload['parkCode'] = park_code
+
+#     res = requests.get(url, params=payload)
+#     data = res.json()
+#     alerts_api = data['data']
+
+#     alerts = []
+#     for item in alerts_api:
+#         alert = {}
+#         alert['id'] = item['id']
+#         alert['url'] = item['url']
+#         alert['title'] = item['title']
+#         alert['description'] = item['description']
+#         alert['lastIndexedDate'] = item['lastIndexedDate']
+#         alerts.append(alert)
+
+#     return render_template("park_details.html", 
+#                            park=park,
+#                            main_attractions = main_attractions,
+#                            alerts = alerts)
 
 
 
@@ -276,12 +516,13 @@ def advance_search_result():
     """ Show the result for advance search on a new page """
 
     park_names = crud.get_park_names()
-    all_states_names = crud.get_all_states()
+    all_parks = crud.get_parks()
+    all_states_names = crud.get_all_states_names()
     all_activities = crud.get_all_activities()
     all_topics = crud.get_all_topics()
 
     state_name = request.args.get("state", "")
-    activities = request.args.getlist("activity")
+    activities = request.args.getlist("attraction")
     topics = request.args.getlist("topic")
     response = True
 
@@ -307,7 +548,7 @@ def advance_search_result():
     return render_template("advance-search-result.html", 
                            response=response,
                            result=result,
-                           park_names=park_names, 
+                           all_parks = all_parks, 
                            all_states=all_states_names,
                            all_activities=all_activities,
                            all_topics=all_topics)
@@ -328,6 +569,10 @@ def advance_search_result_ajax():
     topics = request.json.get("topics")
     response = True
 
+    print("######## state = ", state)
+    print("######## activities = ", activities)
+    print("######## topics = ", topics)
+
     # all_parks = crud.get_parks()
     # all_park_states = crud.get_all_park_states
 
@@ -346,6 +591,9 @@ def advance_search_result_ajax():
        result = "Please select a filter" 
     else:
         parks = crud.get_matching_parks(state, activities, topics)
+
+        print("####### parks", parks)
+
         if len(parks) == 0:
             response = False
             result = "No parks available"
@@ -576,15 +824,292 @@ def remove_from_wishlist(id):
     return redirect(request.referrer)
 
 
+
+@app.route("/plan-trip")
+def plan_a_trip():
+    """ Display a form for planning a trip """
+
+    # park_names = crud.get_park_names()
+    
+    parks = crud.get_parks()
+    
+    # park_names = []
+    # park_ids = []
+    # for park in parks:
+    #     park_names.append(park.park_name)
+    #     park_ids.append(park.park_id)
+
+    return render_template("plan_trip.html", 
+                           parks = parks)
+
+
+
+@app.route("/app/plan-trip/ajax")
+def get_main_attractions_for_trip():
+    """ Get main attractions to be displayed based on park selected """
+    
+    park_id = request.args.get("park_id", "")
+
+    park_code = crud.get_park_code_by_id(park_id)
+
+    url = "https://developer.nps.gov/api/v1/thingstodo"
+    payload = {"api_key": API_KEY}
+    payload['parkCode'] = park_code
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    things_to_do = data['data']
+
+    main_attractions = []
+    
+    for thing in things_to_do:
+        attraction = {}
+        attraction['id'] = thing['id']
+        attraction['title'] = thing['title']
+        main_attractions.append(attraction)
+
+    # return jsonify({"main_attractions": main_attractions})
+    return render_template("plan_trip-main_attractions.html", 
+                           main_attractions = main_attractions)
+
+
+@app.route("/trip")
+def create_a_trip():
+    """ Create a trip with the details entered in trip plan """
+
+    trip_name = request.args.get("trip-name")
+    park_id = request.args.get("park")
+    start_date = request.args.get("start-date")
+    end_date = request.args.get("end-date")
+    trip_attractions_id = request.args.getlist("attraction")
+    notes = request.args.get("notes")
+
+    print("#################### start_date = ", start_date)
+    print("#################### end_date = ", end_date)
+    print("#################### trip_attractions_id = ", trip_attractions_id)
+
+
+    logged_in_email = session.get("user_email")
+
+    if logged_in_email is None:
+        flash("Please log in to create a trip")
+
+        return redirect(request.referrer)
+    
+    else:
+        user = crud.get_user_by_email(logged_in_email)
+        park = crud.get_park_by_id(park_id)
+        add_user_trip = crud.create_user_trip(trip_name, start_date, end_date, notes, user, park)
+        db.session.add(add_user_trip)
+        db.session.commit()
+
+        url = "https://developer.nps.gov/api/v1/thingstodo"
+        payload = {"api_key": API_KEY}
+        park_code = park.park_code
+        payload['parkCode'] = park_code
+
+        res = requests.get(url, params=payload)
+        data = res.json()
+        things_to_do = data['data']
+
+        trip_attractions = []
+        for id in trip_attractions_id:
+            attraction = {}
+            for thing in things_to_do:
+                if thing['id'] == id:
+                    attraction['id'] = id
+                    attraction['title'] = thing['title']
+                    trip_attractions.append(attraction)
+        
+
+        trip_attractions_objects = []
+        for attraction in trip_attractions:
+            add_trip_attraction = crud.create_trip_attraction(attraction['id'], attraction['title'], add_user_trip, user)
+            db.session.add(add_trip_attraction)
+            db.session.commit()
+            trip_attractions_objects.append(add_trip_attraction)
+
+
+        print("################# attraction names = ", trip_attractions) 
+
+
+
+        flash("Trip has been added to your profile")         
+
+    return render_template("trip-details.html",
+                        trip = add_user_trip,
+                        trip_attractions_objects = trip_attractions_objects
+                        )
+
+
+
+@app.route("/trip/<id>")
+def display_trip_details(id):
+    """ Display details of trip with given id """
+
+    trip = crud.get_trip_by_id(id)
+    print(f"############### trip = {trip}")
+
+    trip_attractions_objects = crud.get_attractions_for_trip(id)
+
+    return render_template("trip-details.html",
+                           trip = trip,
+                           trip_attractions_objects = trip_attractions_objects)
+
+
+
+@app.route("/trip/<id>/remove_trip")
+def remove_trip(id):
+    """ Remove trip from user's list of trips """
+    
+    if "user_email" in session:
+        logged_in_user_email = session["user_email"]
+        user = crud.get_user_by_email(logged_in_user_email)
+        user_id = user.user_id
+
+        
+
+        trip_to_be_removed = crud.get_user_trip_by_user_and_id(user_id, id)
+
+        print("########################## trip to be removed = ", trip_to_be_removed)
+
+        trip_name = trip_to_be_removed.trip_name
+        
+        db.session.delete(trip_to_be_removed)
+        db.session.commit()
+        
+        flash(f"{trip_name} has been removed from your wishlist")
+
+    else:
+        flash("Please log in to remove park from favorites")
+    
+    return redirect(request.referrer)
+
+
+
+@app.route("/trip/<id>/edit_trip")
+def edit_trip(id):
+    """ Edit trip with given id """
+
+    parks = crud.get_parks()
+
+    if "user_email" in session:
+        logged_in_user_email = session["user_email"]
+        user = crud.get_user_by_email(logged_in_user_email)
+        user_id = user.user_id
+
+        trip_to_be_edited = crud.get_user_trip_by_user_and_id(user_id, id)
+
+    else:
+        flash("Please log in to remove park from favorites")
+
+    saved_attractions = trip_to_be_edited.trip_attractions
+    list_of_saved_attraction_names = []
+    for attraction in saved_attractions:
+        list_of_saved_attraction_names.append(attraction.attraction_name)
+
+
+    ### API call and code to get all main attractions (things to do) for the park that is being edited
+    
+    park_id = trip_to_be_edited.park.id
+    park_code = crud.get_park_code_by_id(park_id)
+
+    url = "https://developer.nps.gov/api/v1/thingstodo"
+    payload = {"api_key": API_KEY}
+    payload['parkCode'] = park_code
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    things_to_do = data['data']
+
+    main_attractions = []
+    
+    for thing in things_to_do:
+        attraction = {}
+        attraction['id'] = thing['id']
+        attraction['title'] = thing['title']
+        main_attractions.append(attraction)
+
+
+
+
+    
+    return render_template("edit_trip.html", 
+                           trip = trip_to_be_edited,
+                           parks = parks,
+                           main_attractions = main_attractions,
+                           list_of_saved_attraction_names = list_of_saved_attraction_names)
+        
+
+
+
+@app.route("/trip/<id>/trip-details-edited")
+def saved_edited_trip(id):
+    """ Edit the details of trip with given trip id """
+
+    trip_name = request.args.get("trip-name")
+    park_id = request.args.get("park")
+    start_date = request.args.get("start-date")
+    end_date = request.args.get("end-date")
+    trip_attractions_id = request.args.getlist("attraction")
+    notes = request.args.get("notes")
+
+    if "user_email" in session:
+        logged_in_user_email = session["user_email"]
+        user = crud.get_user_by_email(logged_in_user_email)
+        user_id = user.user_id
+
+        trip_to_be_updated = crud.get_user_trip_by_user_and_id(user_id, id)
+        updated_park = crud.get_park_by_id(park_id)
+
+        trip_to_be_updated.trip_name = trip_name
+        trip_to_be_updated.start_date = start_date
+        trip_to_be_updated.end_date = end_date
+        trip_to_be_updated.notes = notes
+        trip_to_be_updated.park = updated_park
+        db.session.commit()
+
+        ### delete pre-edit trip attractions/ things to do
+        trip_attractions_to_be_updated = crud.get_attractions_for_trip(id)
+        for attraction in trip_attractions_to_be_updated:
+            db.session.delete(attraction)
+            db.session.commit
+        
+
+        ### create and add new attractions for trip based on edited information
+
+        url = "https://developer.nps.gov/api/v1/thingstodo"
+        payload = {"api_key": API_KEY}
+        park_code = updated_park.park_code
+        payload['parkCode'] = park_code
+
+        res = requests.get(url, params=payload)
+        data = res.json()
+        things_to_do = data['data']
+
+        trip_attractions = []
+        for id in trip_attractions_id:
+            attraction = {}
+            for thing in things_to_do:
+                if thing['id'] == id:
+                    attraction['id'] = id
+                    attraction['title'] = thing['title']
+                    trip_attractions.append(attraction)
+        
+
+        trip_attractions_objects = []
+        for attraction in trip_attractions:
+            add_trip_attraction = crud.create_trip_attraction(attraction['id'], attraction['title'], trip_to_be_updated, user)
+            db.session.add(add_trip_attraction)
+            db.session.commit()
+            trip_attractions_objects.append(add_trip_attraction)
     
 
-    
+    return render_template("trip-details.html",
+                        trip = trip_to_be_updated,
+                        trip_attractions_objects = trip_attractions_objects
+                        )
 
-
-
-
-
-    
 
 
 

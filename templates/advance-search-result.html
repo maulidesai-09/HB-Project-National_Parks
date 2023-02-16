@@ -11,8 +11,8 @@
             <p>
                 Select a park <select name="park" id="park-name" placeholder="Select a park name..">
                     <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
-                        {% for name in park_names %}
-                    <option id="selected-option" value="{{ name }}" > {{ name }} </option>
+                        {% for park in all_parks %}
+                    <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
                     {% endfor %}
                 </select>
             </p>
@@ -102,7 +102,7 @@
         <div class="form-container-submit">
             <p>
                 <button id="search"> Search </button>
-                <button id="clear"> Clear </button>
+                <!-- <button id="clear"> Clear </button> -->
             </p>
         </div>
     

@@ -14,6 +14,8 @@ model.connect_to_db(server.app)
 server.app.app_context().push()
 model.db.create_all()
 
+from datetime import datetime
+
 
 ### Creating parks, park states, park activities, park topics, using CRUD function ###
 
@@ -138,11 +140,18 @@ for n in range(1,11):
     for _ in range(5):
         park_fav = random.choice(parks_in_db)
         park_wish = random.choice(parks_in_db)
+        user_trip_park = random.choice(parks_in_db)
+        user_trip_name = f"Sample Trip"
+        user_trip_start_date = "02.10.2023"
+        user_trip_end_date = "02.10.2023"
+        notes = "Trip details go here.. "
 
         db_favorite = crud.create_user_favorite(db_user, park_fav)
         db_wishlist = crud.create_user_wishlist(db_user, park_wish)
+        db_user_trip = crud.create_user_trip(user_trip_name, user_trip_start_date, user_trip_end_date, notes, db_user, user_trip_park)
         model.db.session.add(db_favorite)
         model.db.session.add(db_wishlist)
+        model.db.session.add(db_user_trip)
 
 
 model.db.session.commit()

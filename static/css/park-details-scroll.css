@@ -1,0 +1,60 @@
+
+
+.scroll-container {
+    background-color: maroon;
+    color: white;
+    padding: 5px;
+    height: 36px;
+
+    white-space: nowrap;
+}
+
+.scroll-container .scroll-text {
+    -moz-animation: marquee 25s linear infinite;
+    -webkit-animation: marquee 25s linear infinite;
+    animation: marquee 25s linear infinite;
+}
+
+@-moz-keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@-webkit-keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes marquee {
+    0% {
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+    100% {
+        -moz-transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+    }
+}
+
+
+.fav-wish-buttons {
+    display: inline-flex;
+}
+
+#user_favorite {
+    margin: 9px
+}
+
+#user_wishlist {
+    margin: 9px
+}

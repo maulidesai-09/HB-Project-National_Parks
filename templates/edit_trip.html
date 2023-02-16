@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Trip {% endblock %}
+
+{% block body %} 
+
+<h1> Edit your trip! </h1>
+
+    <form action="/trip/{{ trip.id }}/trip-details-edited" name="trip-edited" method="GET"> 
+
+        <div class="trip-name">
+            <h3> Trip Name: </h3>
+                <input type="text" id="trip-name" name="trip-name" value="{{ trip.trip_name }}">
+                <p id="trip-id" hidden> {{ trip.id }} </p>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="park">
+            <h3> Select a Park </h3>
+                <select name="park" id="park-name" placeholder="Select a park..">
+                    <option  id="pre-populated-option-park" value="{{ trip.park.id }}"> {{ trip.park.park_name }} </option>
+                    <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
+                    {% for park in parks %}
+                    <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
+                    {% endfor %}
+            </select>
+
+        <br>
+        <br>
+
+        <div class="dates">
+            <h3> Pick your dates: </h3>
+
+            Start Date: <input type="date" name="start-date" value="{{ trip.start_date }}" id="start-date" required>
+            End Date: <input type="date" name="end-date" value="{{ trip.end_date }}" id="end-date" required>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="dropdown trip-attractions"> 
+            <h3> Add Things To Do </h3>
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+                Select Things To Do
+            </button>
+            <ul class="dropdown-menu"> 
+                {% for attraction in main_attractions %}
+                <a class="dropdown-item small" href="#" data-value="{{ attraction.id }}" tabIndex="-1"> 
+                    <input type="checkbox" class="checkbox-attraction" name="attraction" value="{{ attraction.id }}" {%if attraction.title in list_of_saved_attraction_names %} checked {% endif %}/> &nbsp;{{ attraction.title }} 
+                </a>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="Notes">
+            <h3> Trip Details </h3>
+
+            <textarea name="notes" id="notes" wrap="hard" style="width: 500px; height: 200px;">{{ trip.notes }} </textarea>
+        
+        </div>
+
+        <div class = "submit">
+            <input type="submit" name="trip" id="trip" >
+        </div>
+    
+    </form>
+
+    <script src="/static/js/trip.js"> </script>
+
+{% endblock %}

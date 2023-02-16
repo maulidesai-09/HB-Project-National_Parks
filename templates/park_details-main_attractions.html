@@ -1,0 +1,36 @@
+<!-- HTML for information of main attractions to be displayed via AJAX response  -->
+
+
+<!-- <div> {{ result.short_description }} </div> -->
+
+<div>{{ result.long_description|safe }}</div>  <!-- "|safe" converts html in string format to regular html format -->
+
+
+<div> <b> Location: </b> </div>
+<div> {{ result.location }} </div>
+
+<div> <b> Activities: </b> </div> 
+    <div>
+        <ul> 
+        {% for activity in result.activities %}
+            <li> {{ activity }} </li> 
+        {% endfor %}
+        </ul>
+    </div>
+
+<div> <b> Topics: </b> </div> 
+    <div>
+        <ul> 
+        {% for topic in result.topics %}
+        <li> {{ topic }} </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+<div> <b> Images: </b>
+    <div>
+        {% for image in result.images %}
+        <img src= "{{ image }}" style="height: 350px; width: 500px;">
+        {% endfor %}
+    </div>
+    <br>

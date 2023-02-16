@@ -21,7 +21,7 @@
             <ul>
                 {% for favorite in user.favorites %}
                 <li> 
-                    {{ favorite.park.park_name }}
+                    <a href="/parks/{{ favorite.park.id}}"> {{ favorite.park.park_name }} </a>
                         <form style="display: inline-block;" action="/parks/{{ favorite.park.id }}/remove_favorite" name="form_remove_fav">
                             <input type="submit" id="remove_fav" value="Remove from Favorites"> </button>
                         </form>
@@ -35,12 +35,29 @@
             <ul>
                 {% for wish in user.wishlists %}
                 <li> 
-                    {{ wish.park.park_name }} 
+                    <a href="/parks/{{ wish.park.id }}"> {{ wish.park.park_name }} </a>
                     <form style="display: inline-block;" action="/parks/{{ wish.park.id }}/remove_wish" name="form_remove_wish">
                         <button id="remove_wish"> Remove from Wishlist </li>
                     </form>
                 {% endfor %}
             </ul>
     </p>
+
+    <b> Trips </b>
+            <ul>
+                {% for trip in user.trips %}
+                <li>
+                     <a href="/trip/{{ trip.id }}">
+                        {{ trip.trip_name }} 
+                    </a>
+                    <form style="display: inline-block;" action="/trip/{{ trip.id }}/remove_trip" name="form_remove_trip">
+                        <button id="remove_trip"> Remove Trip
+                    </form>
+                    <form style="display: inline-block;" action="/trip/{{ trip.id }}/edit_trip" name="form_edit_trip">
+                        <button id="edit_trip"> Edit Trip 
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
 
 {% endblock %}

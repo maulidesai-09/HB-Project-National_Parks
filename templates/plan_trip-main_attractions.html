@@ -1,0 +1,9 @@
+<!-- HTML for list of main attractions to be displayed via AJAX response  -->
+
+    {% for attraction in main_attractions %}
+    <li> 
+        <a class="dropdown-item small" href="#" data-value="{{ attraction.id }}" tabIndex="-1"> 
+            <input type="checkbox" class="checkbox-attraction" name="attraction" value="{{ attraction.id }}"/> &nbsp;{{ attraction.title }} 
+        </a>
+    </li>
+    {% endfor %} 
