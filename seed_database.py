@@ -157,6 +157,22 @@ for n in range(1,11):
 model.db.session.commit()
 
 
+comments_in_db = []
+
+comment_user = crud.get_user_by_id(1)
+comment_park = crud.get_park_by_id(63)
+review_1 = "Sample review comment - 1"
+review_2 = "Sample review comment - 2"
+
+db_review_comment_1 = crud.create_review_comment(review_1, comment_user, comment_park)
+model.db.session.add(db_review_comment_1)
+
+db_review_comment_2 = crud.create_review_comment(review_2, comment_user, comment_park)
+model.db.session.add(db_review_comment_2)
+
+model.db.session.commit()
+
+
 
 
 # model.db.session.add_all(users_in_db)

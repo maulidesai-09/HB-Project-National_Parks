@@ -522,7 +522,7 @@ def advance_search_result():
     all_topics = crud.get_all_topics()
 
     state_name = request.args.get("state", "")
-    activities = request.args.getlist("attraction")
+    activities = request.args.getlist("activity")
     topics = request.args.getlist("topic")
     response = True
 
@@ -1112,7 +1112,50 @@ def saved_edited_trip(id):
 
 
 
+@app.route("/parks/<id>/review-comments")
+def get_review_comments_for_park(id):
+    """ Get review comments for a park with given id """
 
+    park_comments = crud.get_review_comments_by_park(id)
+
+    review_comments = []
+    for comment in park_comments:
+        review_comment = {}
+        review_comment['id'] = comment.id
+        review_comment['review'] = comment.review
+        review_comment['user'] = comment.user.fname + " " + comment.user.lname
+        review_comments.append(review_comment)
+
+    return jsonify({"review_comments": review_comments})
+
+
+
+@app.route("/add-review-comment", methods=["POST"])
+def add_review_comment():
+    """ Add review comment to the database """
+
+    review = request.get_json().get("review")
+    park_id = request.get_json().get("park_id")
+    park = crud.get_park_by_id(park_id)
+    
+    if "user_email" in session:
+        logged_in_user_email = session["user_email"]
+        user = crud.get_user_by_email(logged_in_user_email)
+        user_name = user.fname + user.lname
+        
+        new_review_comment = crud.create_review_comment(review, user, park)
+        db.session.add(new_review_comment)
+        db.session.commit()
+        
+        response = {"id": new_review_comment.id,
+                    "review": review,
+                    "user": user_name}
+
+    else:
+        response = flash("Please log in to add review")
+       
+
+    return jsonify({"response": response})
 
 
 

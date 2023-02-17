@@ -1,6 +1,6 @@
 """ CRUD operations """
 
-from model import db, Park, Park_State, Park_Activity, Park_Topic, User, User_Favorite, User_Wishlist, User_Trip, Trip_Attraction, connect_to_db
+from model import db, Park, Park_State, Park_Activity, Park_Topic, User, User_Favorite, User_Wishlist, User_Trip, Trip_Attraction, Review_Comment, connect_to_db
 from datetime import datetime
 
 def create_park(park_code, park_name, general_info, history, main_attractions,
@@ -388,6 +388,43 @@ def get_attractions_for_trip(trip_id):
 
     return trip_attractions
 
+
+
+def create_review_comment(review, user, park):
+    """ Create review comment """
+
+    review_comment = Review_Comment(review = review,
+                                    user = user,
+                                    park = park)
+    
+    return review_comment
+
+
+
+def get_all_review_comments():
+    """ Returns all review comments for all parks and all users """
+
+    review_comments = Review_Comment.query.all()
+
+    return review_comments
+
+
+
+def get_review_comments_by_park(park_id):
+    """ Returns all review comments for a particular park """
+
+    review_comments = Review_Comment.query.filter_by(park_id = park_id).all()
+
+    return review_comments
+
+
+
+def get_review_comments_by_user(user_id):
+    """ Returns all review comments made by a particular user """
+
+    review_comments = Review_Comment.query.filter_by(user_id = user_id).all()
+
+    return review_comments
 
 
 

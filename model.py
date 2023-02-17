@@ -25,6 +25,7 @@ class Park(db.Model):
     states = db.relationship("Park_State", back_populates = "park")
     activities = db.relationship("Park_Activity", back_populates = "park")
     topics = db.relationship("Park_Topic", back_populates = "park")
+    review_comments = db.relationship("Review_Comment", back_populates = "park")
 
 
     def __repr__(self):
@@ -105,6 +106,7 @@ class User(db.Model):
     wishlists = db.relationship("User_Wishlist", back_populates = "user")
     trips = db.relationship("User_Trip", back_populates = "user")
     trip_attractions = db.relationship("Trip_Attraction", back_populates = "user")
+    review_comments = db.relationship("Review_Comment", back_populates = "user")
 
 
     def __repr__(self):
@@ -195,7 +197,31 @@ class Trip_Attraction(db.Model):
 
         return f'<Attraction-id = {self.id} User-trip id = {self.trip_id} User_id = {self.user_id} Attraction_name = {self.attraction_name}>'
     
-    
+
+
+class Review_Comment(db.Model):
+    """ Information about review comment made by a user for a park """
+
+    __tablename__ = "review_comments"
+
+    id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    review = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
+
+    user = db.relationship("User", back_populates = "review_comments")
+    park = db.relationship("Park", back_populates = "review_comments")
+
+
+    def __repr__(self):
+        """ Show info about review comment """
+
+        return f'<Review_comment id = {self.id} User_id = {self.user_id} Park_id = {self.park_id}>'
+
+
+
+
+
 
     
 def connect_to_db(flask_app, db_uri="postgresql:///parks", echo=False):

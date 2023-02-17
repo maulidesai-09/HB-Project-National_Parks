@@ -2,6 +2,13 @@
 
 {% block title %} {{park.park_name}} - Details {% endblock %}
 
+{% block head %}
+    <!-- React Library -->  
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+{% endblock %}
+
 {% block body %}
     <!-- <form name="park-details"> -->
 
@@ -71,13 +78,20 @@
     </p> -->
 
 
+    <div id="react_container"> </div>
+
+
+    
     <script src="/static/js/maps-park-details.js"></script>
+    
     <script
         async
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMiuAyoo-rGsBKsjt_Qav5rRB-xX7N87k&callback=initMap">
     </script>
 
     <script src="/static/js/park-details.js"> </script>
+
+    <script src="/static/js/review-comments.jsx" type="text/jsx"></script>
 
     <!-- </form> -->
 
