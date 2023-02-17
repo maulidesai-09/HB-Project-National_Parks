@@ -44,6 +44,26 @@ park_name_element.addEventListener('change', (evt) => {
 
 
 
+const state_map_element = document.querySelectorAll(".map-state")
+
+for (const state of state_map_element) {
+    state.addEventListener('click', (evt) => {
+        evt.preventDefault()
+    
+        const selected_map_state = evt.target.getAttribute("alt")
+        console.log(evt.target)
+        console.log(selected_map_state)
+    
+        url = `/search/state_map_result?selected_map_state=${selected_map_state}`
+    
+        window.location.href = url
+    
+    })
+}
+
+
+
+
 // JS for dropdown checkbox for activities
 
 // let options = []

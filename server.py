@@ -1,8 +1,8 @@
 """Server for National Parks app"""
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
-
 from pprint import pformat, pprint
+# from passlib.hash import argon2
 import os
 import requests
 import json
@@ -509,6 +509,48 @@ def search_form():
 #                            main_attractions = main_attractions,
 #                            alerts = alerts)
 
+@app.route("/search/state_map_result")
+def state_map_search_results():
+    """ Show the result for state selected from clickable map """
+
+    state_name = request.args.get("selected_map_state", "")
+
+    all_parks = crud.get_parks()
+    all_states_names = crud.get_all_states_names()
+    all_activities = crud.get_all_activities()
+    all_topics = crud.get_all_topics()
+
+    activities = []
+    topics = []
+    response = True
+
+    print("######## state = ", state_name)
+    print("######## activities = ", activities)
+    print("######## topics = ", topics)
+
+    if state_name == "" and len(activities) == 0 and len(topics) == 0:
+       response = False
+       result = "Please select a filter"
+    else:
+        parks = crud.get_matching_parks(state_name, activities, topics)
+        print("####### parks", parks)
+        if len(parks) == 0:
+            response = False
+            result = "No parks available"
+        else:
+            result = parks
+    
+    print("######## result = ", result)
+    
+
+    return render_template("advance-search-result.html", 
+                           response=response,
+                           result=result,
+                           all_parks = all_parks, 
+                           all_states=all_states_names,
+                           all_activities=all_activities,
+                           all_topics=all_topics)
+
 
 
 @app.route("/search/advance_search_result")
@@ -624,7 +666,6 @@ def advance_search_result_ajax():
     #                        response=response,
     #                        result=result)
 
-
     
 
 @app.route("/login")
@@ -652,6 +693,7 @@ def login():
     if email in user_emails:
         user = crud.get_user_by_email(email)
         if user.password == password:
+        # if argon2.verify(password, user.password):
             session['user_email'] = user.email
             flash(f"Welcome, {user.fname}!")
             return redirect("/")
@@ -672,6 +714,8 @@ def sign_up():
     lname = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
+    # hashed_password = argon2.hash(passwd)
+    # del password
 
     user_emails = crud.get_user_emails()
 
@@ -679,6 +723,7 @@ def sign_up():
         flash("An account with this email already exists. Try again.")
     else:
         new_user_email = crud.create_user(fname, lname, email, password)
+        # new_user_email = crud.create_user(fname, lname, email, hashed_password)
         db.session.add(new_user_email)
         db.session.commit()
         flash("Account created! Please log in.")

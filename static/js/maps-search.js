@@ -20,20 +20,30 @@ function initMap() {
         locations.push(park_details)
     }
 
+    let average_latitude = undefined
+    let average_longitude = undefined
     
     let latitudes = []
     for (const park of document.querySelectorAll(".result-park")) {
         latitudes.push(parseFloat(park.getElementsByClassName("lat")[0].innerHTML))
     }
     
-    let average_latitude = (Math.min(...latitudes) + Math.max(...latitudes))/2
+    if (latitudes.length === 0) {
+        average_latitude = 47.116386
+    } else {
+        average_latitude = (Math.min(...latitudes) + Math.max(...latitudes))/2
+    }
     
 
     let longitudes = []
     for (const park of document.querySelectorAll(".result-park")) {
         longitudes.push(parseFloat(park.getElementsByClassName("long")[0].innerHTML))}
     
-    let average_longitude = (Math.min(...longitudes) + Math.max(...longitudes))/2
+    if (longitudes.length === 0) {
+        average_longitude = -101.299591
+    } else {
+        average_longitude = (Math.min(...longitudes) + Math.max(...longitudes))/2
+    }
 
     
     let basicMap = new google.maps.Map(document.querySelector("#map"), {
@@ -41,7 +51,7 @@ function initMap() {
             lat: average_latitude,
             lng: average_longitude,
           },
-        zoom: 4
+        zoom: 3.5
     }
     );
 
@@ -79,7 +89,7 @@ function initMap() {
 
 // AJAX - Search for park by State, by Activities and by Topics:
 
-const advance_search_element = document.querySelector("#search")
+const advance_search_element = document.querySelector("#search-button")
 const advance_clear_element = document.querySelector("#clear")
 const park_state_element = document.querySelector(".state-name")
 const park_activities_element = document.querySelectorAll(".checkbox-activity")
@@ -89,6 +99,7 @@ advance_search_element.addEventListener('click', (evt) => {
     evt.preventDefault()
 
     const park_state = park_state_element.value
+    console.log(park_state)
     
     const park_activities = []
     for (const activity of park_activities_element) {
