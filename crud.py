@@ -161,6 +161,9 @@ def get_all_topics():
 def get_matching_parks(state_name, activities, topics):
     """" Returns parks that match the given state, activities, topics """
 
+    print(state_name)
+    print("#####length = ", len(state_name))
+    print("#####type = ", type(state_name))
     all_filters = []
     if state_name != "":
         all_filters.append(Park_State.state_name == state_name)
@@ -169,7 +172,7 @@ def get_matching_parks(state_name, activities, topics):
     if len(topics) > 0:
         all_filters.append(Park_Topic.topic.in_(topics))
     
-    # print("########### all_filters = ", all_filters)
+    print("########### all_filters = ", all_filters)
 
     all_parks = (db.session.query(Park)
                  .join(Park_State)
@@ -318,12 +321,6 @@ def get_user_wish_to_be_removed(user_id, park_id):
 
 def create_user_trip(trip_name, start_date, end_date, notes, user, park):
     """ Create and return a new trip to be added to user's trips """
-
-    # start_date = datetime.strptime(str(start_date), '%Y-%m-%d')
-    # end_date = datetime.strptime(str(start_date), '%Y-%m-%d')
-
-    # start_date = datetime.date(start_date)
-    # end_date = datetime.date(end_date)
 
     user_trip = User_Trip(trip_name=trip_name,
                           start_date = start_date,

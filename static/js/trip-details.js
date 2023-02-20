@@ -1,4 +1,5 @@
-// JS for trip details
+// JS for trip details - getting details of the attractions/ activities selected by the user from the 
+// browser and sends it to the server
 
 const attractions = document.querySelectorAll(".attraction")
 

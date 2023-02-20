@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block body %}
-    <!-- <form name="park-details"> -->
 
     <h1 id="park_name"> {{ park.park_name }} </h1>
     <p id="park_id" hidden> {{ park.id }} </p>
@@ -25,6 +24,7 @@
         </form>
     </div>
 
+
     <p>
         <b> Alerts: </b>
             <div class="scroll-container">
@@ -35,7 +35,6 @@
                 </p>
             </div>
     </p>
-
 
 
     <p>
@@ -69,19 +68,12 @@
         <div id="map"></div>
     </section>
 
-<!-- 
-    <p>
-        <b> Location : </b>
-        <p id="map">
-            
-        </p>
-    </p> -->
-
 
     <div id="react_container"> </div>
 
 
     
+    <!-- JS -->
     <script src="/static/js/maps-park-details.js"></script>
     
     <script
@@ -92,7 +84,5 @@
     <script src="/static/js/park-details.js"> </script>
 
     <script src="/static/js/review-comments.jsx" type="text/jsx"></script>
-
-    <!-- </form> -->
 
 {% endblock %}

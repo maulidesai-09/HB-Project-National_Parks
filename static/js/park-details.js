@@ -1,4 +1,4 @@
-// JS for park details
+// JS for ajax request to display main attractions on the park details page
 
 const attractions = document.querySelectorAll(".attraction")
 
@@ -23,29 +23,3 @@ for (const attraction of attractions) {
         })
     })
     }
-
-        // const div = `
-        //             <div> ${responseJson.result.shortDescription} </div>
-        //             <div> ${responseJson.result.longDescription} </div>
-        //             <div> <b> Location: </b> </div>
-        //             <div> ${responseJson.result.location} </div>
-        //             <div> <b> Activities: </b> </div> 
-        //                 <ul> 
-        //                 $(for activity in ${responseJson.result.activities}) {
-        //                     <li> ${{ activity }} </li>
-        //                 }                        
-        //                 </ul>
-        //             <div> <b> Topics: </b> </div> 
-        //                 <ul> 
-        //                 {%for topic in ${responseJson.result.activities} %}
-        //                 <li> {{ activity }} </li>
-        //                 {% endfor %}
-        //                 </ul>
-        //             <div> <b> Images: </b>
-        //             {% for image in ${responseJson.result.images} %}
-        //                 <img url= {{ image }}>
-        //             `
-        // html_string += div
-        
-        // document.querySelector(".result_attraction_details").innerHTML = html_string
-   

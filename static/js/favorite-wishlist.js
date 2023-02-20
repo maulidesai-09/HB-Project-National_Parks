@@ -1,12 +1,14 @@
 // JS for Favorites and Wishlist
 
-const favorite = document.querySelector("#favorite")
+// const favorite = document.querySelector("#favorite")
 
-favorite.addEventListener('click', (evt) => {
-    evt.preventDefault();
+// favorite.addEventListener('click', (evt) => {
+//     evt.preventDefault();
 
-    const url = ("/favorite?")
+//     const url = ("/favorite?")
 
 
 
-}
+// }
+
+// THIS FILE IS NOT IN USE

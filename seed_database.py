@@ -15,42 +15,13 @@ server.app.app_context().push()
 model.db.create_all()
 
 from datetime import datetime
+from passlib.hash import argon2
 
 
 ### Creating parks, park states, park activities, park topics, using CRUD function ###
 
 with open('data/parks.json') as f:
     parks_data = json.loads(f.read())
-
-# parks_in_db = []
-
-# for park in parks_data:
-#     park_code = park['park_code']
-#     park_name = park['park_name']
-#     general_info = park['general_info']
-#     history = '*** history pending ***'
-#     main_attractions = '*** main_attractions pending ***'
-#     trails = '*** trails pending ***'
-#     location_lat = park['location_lat']
-#     location_long = park['location_long']
-
-#     # if park['location_lat'] == "":
-#     #     location_lat = 0.0
-#     # else:
-#     #     location_lat = float((park['location_lat']).strip())
-    
-#     # if park['location_long'] == "":
-#     #     location_long = 0.0
-#     # else:
-#     #     location_long = float((park['location_long']).strip())
-
-#     db_park = crud.create_park(park_code, park_name, general_info, history, 
-#                                main_attractions, trails, location_lat, location_long)
-#     parks_in_db.append(db_park)
-
-# model.db.session.add_all(parks_in_db)
-# model.db.session.commit()
-
 
 parks_in_db = []
 
@@ -63,16 +34,6 @@ for ind_park in parks_data:
     trails = '*** trails pending ***'
     location_lat = ind_park['location_lat']
     location_long = ind_park['location_long']
-
-    # if park['location_lat'] == "":
-    #     location_lat = 0.0
-    # else:
-    #     location_lat = float((park['location_lat']).strip())
-    
-    # if park['location_long'] == "":
-    #     location_long = 0.0
-    # else:
-    #     location_long = float((park['location_long']).strip())
 
     db_ind_park = crud.create_park(park_code, park_name, general_info, history, 
                                main_attractions, trails, location_lat, location_long)
@@ -101,25 +62,7 @@ for ind_park in parks_data:
         db_park_topic = crud.create_park_topic(park, topic)
         model.db.session.add(db_park_topic)
 
-
-# model.db.session.add_all(parks_in_db)
 model.db.session.commit()
-
-
-### Creating data for Park_State using CRUD functions ###
-
-# park_states_in_db = []
-
-# for park in parks_data:
-#     for state in park['states']:
-#         park = park
-#         state_code = state
-    
-#         db_park_state = crud.create_park_state(park, state_code)
-#         park_states_in_db.append(db_park_state)
-
-# model.db.session.add_all(park_states_in_db)
-# model.db.session.commit()
 
 
 
@@ -132,9 +75,13 @@ for n in range(1,11):
     lname = f"Lname{n}"
     email = f"user{n}@test.com"
     password = f"test{n}"
+    hashed_password = argon2.hash(password)
+    del password
 
-    db_user = crud.create_user(fname, lname, email, password)
-    # users_in_db.append(db_user)
+    # print("hashed = ", hashed_password)
+
+
+    db_user = crud.create_user(fname, lname, email, hashed_password)
     model.db.session.add(db_user)
 
     for _ in range(5):
@@ -171,12 +118,6 @@ db_review_comment_2 = crud.create_review_comment(review_2, comment_user, comment
 model.db.session.add(db_review_comment_2)
 
 model.db.session.commit()
-
-
-
-
-# model.db.session.add_all(users_in_db)
-# model.db.session.commit()
 
 
 

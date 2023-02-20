@@ -7,55 +7,35 @@
     <h1> Search for a Park </h1>
 
     <div class="form-container">
-        <!-- <form class="form" method="GET" action="/search/result"> -->
-            <p>
-                Select a park <select name="park" id="park-name" placeholder="Select a park name..">
-                    <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
-                        {% for park in all_parks %}
-                    <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <!-- <input type="submit" id="search-name" value="Search">
-                <input type="submit" id="clear-name" value="Clear">  -->
-            </p>
-        <!-- </form> -->
+        <p>
+            Select a park <select name="park" id="park-name" placeholder="Select a park name..">
+                <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
+                    {% for park in all_parks %}
+                <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
+                {% endfor %}
+            </select>
+        </p>
     </div>
 
 
-    <!-- <form class="form" method="GET" action="/search/advance_search_result"> -->
         <h2> Search </h2>
 
         <div class="form-container-state">
-            <!-- <form class="form-state" method="GET" action="/search/result"> -->
-                <p>
-                    By State <select name="state" class="state-name" placeholder="Select a state..">
-                        <option id="default-option-state" value=""> Select a state.. </option>
-                        {% for state in all_states %}
-                            <option id="selected-state" value="{{ state }}"> {{ state }} </option>
-                        {% endfor %}
-                    </select>
-                </p>
-            <!-- </form> -->
-        </div>
-
-        <!-- ORIGINAL CODE (WITHOUT DROPDOWN MENU)
-        <div class="form-container-activity">
             <p>
-                By Activity: <br>
-                {% for activity in all_activities[:5] %}
-                     <input type="checkbox" class="checkbox-activity" name="activity" value="{{ activity }}"> {{ activity }} <br>
-                {% endfor %}
+                By State <select name="state" class="state-name" placeholder="Select a state..">
+                    <option id="default-option-state" value=""> Select a state.. </option>
+                    {% for state in all_states %}
+                        <option id="selected-state" value="{{ state }}"> {{ state }} </option>
+                    {% endfor %}
+                </select>
             </p>
         </div>
-        ORIGINAL CODE (WITHOUT DROPDOWN MENU) ENDS -->
 
 
         <div class="dropdown activity">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
             aria-expanded="false">
-            Select activity
+                Select activity
             </button>
             <ul class="dropdown-menu">
                 {% for activity in all_activities %}
@@ -69,23 +49,10 @@
         </div>
 
 
-<!-- 
-        ORIGINAL CODE (WITHOUT DROPDOWN MENU)
-        <div class="form-container-topic">
-            <p>
-                By Topic: <br>
-                {% for topic in all_topics[:5] %}
-                     <input type="checkbox" class="checkbox-topic" name="topic" value="{{ topic }}"> {{ topic }} </input> <br>
-                {% endfor %}
-            </p>
-        </div>
-        ORIGINAL CODE (WITHOUT DROPDOWN MENU) ENDS -->
-
-
         <div class="dropdown topic">
             <button class="btn btn-secondary dropdown-toggle" type="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-            Select topic
+                Select topic
             </button>
             <ul class="dropdown-menu">
                 {% for topic in all_topics %}
@@ -102,11 +69,8 @@
         <div class="form-container-submit">
             <p>
                 <button id="search-button"> Search </button>
-                <!-- <button id="clear"> Clear </button> -->
             </p>
         </div>
-    
-    <!-- </form> -->
 
 
     <h2> Search Results: </h2> 
@@ -139,12 +103,12 @@
     </section>
 
 
+    <!-- JS -->
     <script src="/static/js/maps-search.js"></script>
     <script
         async
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMiuAyoo-rGsBKsjt_Qav5rRB-xX7N87k&callback=initMap">
     </script>
     <script src="/static/js/search.js"> </script>
-    <!-- <script src="/static/js/advance-search.js"> </script> -->
 
 {% endblock %}

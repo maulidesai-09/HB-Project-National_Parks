@@ -1,13 +1,13 @@
-// JS for Google Maps to be displayed on Advance Search Results page
+// JS for Google Maps to be displayed on Advance Search Results page and for handling AJAX requests on advance search page
+
+
+// Google Maps to be displayed on Advance Search Results page 
 
 function initMap() {
 
-    // const parkLat = parseFloat(document.querySelector("#lat").innerHTML)
-    // const parkLong = parseFloat(document.querySelector("#long").innerHTML)
-    // const parkName = document.querySelector("#park_name").innerHTML
-
+    // getting park locations for all search results
     let locations = []
-
+    
     for (const park of document.querySelectorAll(".result-park")) {
         const park_details = {}
         const park_coords = {}
@@ -20,6 +20,7 @@ function initMap() {
         locations.push(park_details)
     }
 
+    // Calculating average latitude and average longitudes across all search results to assign it as 'center'
     let average_latitude = undefined
     let average_longitude = undefined
     
@@ -28,6 +29,8 @@ function initMap() {
         latitudes.push(parseFloat(park.getElementsByClassName("lat")[0].innerHTML))
     }
     
+    // If no parks exist in the search results based on the selected filters, the avg. latitude 
+    // and avg. longitude are set to the center of the country
     if (latitudes.length === 0) {
         average_latitude = 47.116386
     } else {
@@ -56,6 +59,7 @@ function initMap() {
     );
 
 
+    // Creating markers for all park locations included in search results
     const markers = []
     for (const location of locations) {
         markers.push(
@@ -67,25 +71,20 @@ function initMap() {
         )
     }
 
-
+    // Adding info window for all markers containing the hylerlink of the park details page
     for (const marker of markers) {
         const markerInfo = `${marker.title}`
-
-        // <p>
-        //     Located at: <code> ${marker.position.lat} </code>,
-        //     Located at: <code> ${marker.position.lng} </code>,
-        // </p>
-        // `
         const infoWindow = new google.maps.InfoWindow({
             content: markerInfo,
             maxWidth: 200
         });
     
-    
         marker.addListener('click', () => {
             infoWindow.open(basicMap, marker);
         });
     }
+
+
 
 // AJAX - Search for park by State, by Activities and by Topics:
 
@@ -130,20 +129,9 @@ advance_search_element.addEventListener('click', (evt) => {
     
         .then((response) => response.json())  // becomes response.json()
         .then((responseJson) => {
-            // if (responseJson.response) {
-            //     // create HTML string
-            //     // for loop
-            //         // for each park, create <li> using a template string and append to HTML string
-            //     // innerHTML = HTML string
-
-            //     // clear existing markers and use code above to make new markers based on results from ajax call and recenter the map
-            // }
-            // else {
-            //     // display "No parks"
-            // }
-
             if (responseJson.response) {
-                let html_string = ""
+                // creating an html string of list items of park results to be inserted in the selected html element
+                let html_string = ""         
 
                 for (const park of responseJson.result) {
                     const li = `<li> <a href="/parks/${park.park_id}"> ${park.park_name} </a></li>`
@@ -152,11 +140,7 @@ advance_search_element.addEventListener('click', (evt) => {
                 console.log(html_string)
                 document.querySelector(".result").innerHTML = html_string
 
-                // for (const park of responseJson.response) {
-                    
-                // }
-
-
+                // Updating google maps for AJAX search results
                 let locations = []
                 for (const park of responseJson.result) {
                     park_details = {}
@@ -174,6 +158,7 @@ advance_search_element.addEventListener('click', (evt) => {
                     marker.setMap(null)
                 }
 
+                // Calculating average latitude and average longitudes across all search results to assign it as 'center'
                 latitudes = []
                 for (const park of responseJson.result) {
                     latitudes.push(parseFloat(park.park_lat))
@@ -201,8 +186,9 @@ advance_search_element.addEventListener('click', (evt) => {
                 // Using 'const markers' instead of 'let markers' on line 49 because using 'let markers' 
                 // does not create new markers in the code below even after reassigning makers = [].
                 // Hence, using markers.length = 0 below to empty the markers list 
-
-                markers.length = 0
+                
+                // Creating new markers for all park locations included in the updated search results
+                markers.length = 0          // Removing all markers from previous results
                 for (const location of locations) {
                     markers.push(
                         new google.maps.Marker({
@@ -213,15 +199,10 @@ advance_search_element.addEventListener('click', (evt) => {
                     )
                 }
 
-                
+                // Adding info window for new markers containing the hylerlink of the park details page
                 for (const marker of markers) {
                     const markerInfo = `${marker.title}`
 
-                    // <p>
-                    //     Located at: <code> ${marker.position.lat} </code>,
-                    //     Located at: <code> ${marker.position.lng} </code>,
-                    // </p>
-                    // `
                     const infoWindow = new google.maps.InfoWindow({
                         content: markerInfo,
                         maxWidth: 200
@@ -233,52 +214,18 @@ advance_search_element.addEventListener('click', (evt) => {
                     });
                 }
             } else {
+                // if no parks exist in the results based on the search filters, map center is set to the center of the country
                 document.querySelector(".result").innerHTML = responseJson.result
-
-                // let locations = []
-                // for (const park of responseJson.result) {
-                //     park_details = {}
-                //     park_coords ={}
-                //     park_details['name'] = park.park_name
-                //     park_details['hyperlink'] = `/parks/${park.park_id}`
-                //     park_coords['lat'] = parseFloat(park.park_lat)
-                //     park_coords['lng'] = parseFloat(park.park_long)
-                //     park_details['coords'] = park_coords
-
-                //     locations.push(park_details)
-                // }
 
                 for (const marker of markers) {
                     marker.setMap(null)
                 }
 
-                // latitudes = []
-                // for (const park of responseJson.result) {
-                //     latitudes.push(parseFloat(park.park_lat))
-                // }
-                
-                // if (latitudes.length === 0) {
                 average_latitude = 47.116386
-                // } else {
-                // average_latitude = (Math.min(...latitudes) + Math.max(...latitudes))/2
-                // }
-                
-                
-
-                // longitudes = []
-                // for (const park of responseJson.result) {
-                //     longitudes.push(parseFloat(park.park_long))}
-                
-                // if (longitudes.length === 0) {
                 average_longitude = -101.299591
-                // } else {
-                //     average_longitude = (Math.min(...longitudes) + Math.max(...longitudes))/2
-                // }
-                
-                // console.log(latitudes)
-                // console.log(longitudes)
-                console.log(average_latitude)
-                console.log(average_longitude)
+            
+                // console.log(average_latitude)
+                // console.log(average_longitude)
 
                 basicMap = new google.maps.Map(document.querySelector("#map"), {
                     center: {
@@ -287,42 +234,7 @@ advance_search_element.addEventListener('click', (evt) => {
                       },
                     zoom: 4
                 })
-
-                // Using 'const markers' instead of 'let markers' on line 49 because using 'let markers' 
-                // does not create new markers in the code below even after reassigning makers = [].
-                // Hence, using markers.length = 0 below to empty the markers list 
-
-                // markers.length = 0
-                // for (const location of locations) {
-                //     markers.push(
-                //         new google.maps.Marker({
-                //             position: location.coords,
-                //             title: `<a href="${location.hyperlink}"> ${location.name} </a>`,
-                //             map: basicMap
-                //         })
-                //     )
-                // }
-
-
             }
-
-
-                
-
-            // document.querySelector(".result").innerHTML = responseText
-        //     `{% if ${responseJson.response} == true %}
-        //     <ul>
-        //         {% for ind_result in ${responseJson.result} %}
-        //             <li> {{ ind_result.park_name }} </li>
-        //         {% endfor %}
-        //     </ul>
-        // {% else %}
-        //     <p> ${responseJson.result} </p>
-        // {% endif %}`
-
-            
-
-
         })          
 })
 }

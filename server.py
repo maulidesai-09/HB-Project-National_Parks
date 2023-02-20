@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from pprint import pformat, pprint
-# from passlib.hash import argon2
+from passlib.hash import argon2
 import os
 import requests
 import json
@@ -401,17 +401,6 @@ def search_form():
 
     print("########", all_states_names)
 
-    # name = request.args.get('search')
-    # park = crud.get_park_by_name(name)
-
-    # return render_template("park_details.html", park=park)
-
-    # getting names of states on the basis of state codes from 'states' dicitonary above
-    # all_states = []
-    # for state_code in all_states_codes:
-    #     all_states.append(states_dict[state_code])
-
-
     return render_template("search.html", 
                            all_parks = all_parks, 
                            all_states=all_states_names,
@@ -601,11 +590,6 @@ def advance_search_result():
 def advance_search_result_ajax():
     """ Show the result for advance search """
 
-    # park_names = crud.get_park_names()
-    # all_states = crud.get_all_states()
-    # all_activities = crud.get_all_activities()
-    # all_topics = crud.get_all_topics()
-
     state = request.json.get("state")
     activities = request.json.get("activities")
     topics = request.json.get("topics")
@@ -614,19 +598,6 @@ def advance_search_result_ajax():
     print("######## state = ", state)
     print("######## activities = ", activities)
     print("######## topics = ", topics)
-
-    # all_parks = crud.get_parks()
-    # all_park_states = crud.get_all_park_states
-
-    # for park in all_parks:
-    #     for state in park.states.state_code:
-    #         if state in selected_state:
-    #             pass
-    #     for activity in park.activities.activity:
-    #         if activity in selected_activities:
-    #             pass
-    #     for topic in park.topics.topic:
-    #         if topic in selected_topics:
 
     if state == "" and len(activities) == 0 and len(topics) == 0:
        response = False
@@ -655,18 +626,8 @@ def advance_search_result_ajax():
 
     return jsonify({'response': response,
                     'result': result})
-    # return render_template("advance-search-result.html",
-    #                        response=response,
-    #                        result=result,
-    #                        park_names=park_names, 
-    #                        all_states=all_states,
-    #                        all_activities=all_activities,
-    #                        all_topics=all_topics)
-    # return render_template("advance-search-ajax-result.html",
-    #                        response=response,
-    #                        result=result)
 
-    
+
 
 @app.route("/login")
 def login_form():
@@ -676,7 +637,7 @@ def login_form():
         flash("User already logged in")
         return redirect (request.referrer)
     else:
-        return render_template("log-in.html")
+        return render_template("log-in.html", request_url = request.referrer)
 
 
 
@@ -686,17 +647,19 @@ def login():
 
     email = request.form.get('email')
     password = request.form.get('password')
+    request_url = request.form.get('request_url')
 
     user_emails = crud.get_user_emails()
     print("User emails = ", user_emails)
+    print("################### request", request_url)
 
     if email in user_emails:
         user = crud.get_user_by_email(email)
-        if user.password == password:
-        # if argon2.verify(password, user.password):
+        # if user.password == password:
+        if argon2.verify(password, user.password):
             session['user_email'] = user.email
             flash(f"Welcome, {user.fname}!")
-            return redirect("/")
+            return redirect(request_url)
         else:
             flash("The password you entered is incorrect. Please try again")
             return redirect("/login")
@@ -710,25 +673,26 @@ def login():
 def sign_up():
     """ Sign up a new user/ Create a new account """
 
+    request_url = request.form.get('request_url')
     fname = request.form.get('fname')
     lname = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
-    # hashed_password = argon2.hash(passwd)
-    # del password
+    hashed_password = argon2.hash(password)
+    del password
 
     user_emails = crud.get_user_emails()
 
     if email in user_emails:
         flash("An account with this email already exists. Try again.")
     else:
-        new_user_email = crud.create_user(fname, lname, email, password)
-        # new_user_email = crud.create_user(fname, lname, email, hashed_password)
+        # new_user_email = crud.create_user(fname, lname, email, password)
+        new_user_email = crud.create_user(fname, lname, email, hashed_password)
         db.session.add(new_user_email)
         db.session.commit()
         flash("Account created! Please log in.")
     
-    return redirect("/")
+    return redirect(request_url)
 
 
 
@@ -737,19 +701,29 @@ def logout():
     """ Log out existing user """
     
     confirmation = request.args.get('confirmation')
+    print("############", confirmation)
+    previous_path = request.referrer
+    print("###################", previous_path)
 
     if confirmation == "Yes":
         if "user_email" in session:
+            user = crud.get_user_by_email(session["user_email"])
+            user_id = user.user_id
+            print("#######################", f"/users/{user_id}")
             del session['user_email']
-            return "You have been succesfully logged out!"
+            if previous_path == f"http://localhost:5000/users/{user_id}" or previous_path.__contains__("/trip"):
+                # flash("You have been successfully logged out!")
+                return redirect("/")
+            else:
+                flash("You have been succesfully logged out!")
+                return redirect(request.referrer)
         else:
             return "User not logged in"
-    # elif confirmation == "No":
     else:
         if "user_email" in session:
-            return "You have not been logged out"
+            flash("You have not been logged out")
         else:
-            return "User not logged in"
+            flash("User not logged in")
 
 
 
@@ -777,24 +751,6 @@ def add_to_favorite(id):
             flash("Added to favorites!")
     
     return redirect(f"/parks/{id}")
-
-
-
-# @app.route("/users/<user_id>/<id>", methods=["POST"])
-# # @app.route("/user/user_details/<favorite.park.id>", methods=["POST"])
-# def remove_from_favorite(user_id, id):
-#     """ Remove a park from user's favorites with the given arguments - user-id and park-id"""
-
-#     # user_email = session["user_email"]
-#     # user = crud.get_user_by_email
-#     # user_id = user.user_id
-#     park_remove = crud.get_user_favorite_to_be_removed(user_id, id)
-
-#     db.session.delete(park_remove)
-#     db.session.commit()
-
-#     return redirect(request.referrer)
-
 
 
 @app.route("/parks/<id>/remove_favorite")
@@ -873,16 +829,8 @@ def remove_from_wishlist(id):
 @app.route("/plan-trip")
 def plan_a_trip():
     """ Display a form for planning a trip """
-
-    # park_names = crud.get_park_names()
     
     parks = crud.get_parks()
-    
-    # park_names = []
-    # park_ids = []
-    # for park in parks:
-    #     park_names.append(park.park_name)
-    #     park_ids.append(park.park_id)
 
     return render_template("plan_trip.html", 
                            parks = parks)
@@ -913,7 +861,6 @@ def get_main_attractions_for_trip():
         attraction['title'] = thing['title']
         main_attractions.append(attraction)
 
-    # return jsonify({"main_attractions": main_attractions})
     return render_template("plan_trip-main_attractions.html", 
                            main_attractions = main_attractions)
 
@@ -975,9 +922,7 @@ def create_a_trip():
             trip_attractions_objects.append(add_trip_attraction)
 
 
-        print("################# attraction names = ", trip_attractions) 
-
-
+        print("################# attraction names = ", trip_attractions)
 
         flash("Trip has been added to your profile")         
 
@@ -1011,8 +956,6 @@ def remove_trip(id):
         logged_in_user_email = session["user_email"]
         user = crud.get_user_by_email(logged_in_user_email)
         user_id = user.user_id
-
-        
 
         trip_to_be_removed = crud.get_user_trip_by_user_and_id(user_id, id)
 
@@ -1203,12 +1146,6 @@ def add_review_comment():
     return jsonify({"response": response})
 
 
-
-
-
-
-
-    
 
 
 

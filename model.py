@@ -42,7 +42,6 @@ class Park_State(db.Model):
 
     park_state_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     park_id = db.Column(db.Integer, db.ForeignKey("parks.id"))
-    # park_name = db.Column(db.String, db.ForeignKey("parks.park_name"))
     state_code = db.Column(db.String, nullable = False)
     state_name = db.Column(db.String, nullable = False)
 

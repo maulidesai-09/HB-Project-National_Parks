@@ -7,6 +7,9 @@
     <h2> Log In </h2>
     <form action="/login" method="POST">
         <p>
+            <input name="request_url" value={{ request_url }} hidden>
+        </p>
+        <p>
             Email <input type="text" name="email">
         </p>
         <p>
@@ -20,6 +23,9 @@
 
     <h2> Sign Up </h2>
     <form action="/signup" method="POST">
+        <p>
+            <input name="request_url" value={{ request_url }} hidden>
+        </p>
         <p> 
             First Name <input type="text" name="fname" required> 
             Last Name <input type="text" name="lname" required> 

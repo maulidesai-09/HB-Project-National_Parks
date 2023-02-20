@@ -2,8 +2,6 @@
 
 
 // for restricting selection of dates prior to today's date
-
-
 date = new Date();
 year = date.getFullYear();
 month = date.getMonth() + 1; //month starts from 0

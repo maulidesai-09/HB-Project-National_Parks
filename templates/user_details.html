@@ -4,18 +4,14 @@
 
 {% block body %}
 
-    <h1> {{ user.fname }} {{ user.lname }} </h1>
+    <h1> Hello {{ user.fname }} {{ user.lname }}! </h1>
 
     <p>
         <b> Email: </b>
         <p> {{ user.email }} </p>
     </p>
-    
-    <p>
-        <b> Password: </b>
-        <p> {{ user.password }} </p>
-    </p>
 
+    
     <p>
         <b> Favorites </b>
             <ul>
@@ -30,6 +26,7 @@
             </ul>
     </p>
 
+
     <p>
         <b> Wishlist </b>
             <ul>
@@ -42,6 +39,7 @@
                 {% endfor %}
             </ul>
     </p>
+
 
     <b> Trips </b>
             <ul>
