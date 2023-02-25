@@ -134,9 +134,19 @@ advance_search_element.addEventListener('click', (evt) => {
                 let html_string = ""         
 
                 for (const park of responseJson.result) {
-                    const li = `<li> <a href="/parks/${park.park_id}"> ${park.park_name} </a></li>`
+                    const li = `
+                    <li class="li list-group-item" style="display: inline-block;"> 
+                        <div class="all-parks-grid">
+                            <b> <a href="/parks/${park.park_id}" style="color: forestgreen; text-decoration: none;"> 
+                                ${park.park_name} 
+                                <img src="/static/img/icons/${park.park_code}_2.jpeg" 
+                                    style="height: 150px; width: 248px; margin-top: 0.5px">
+                            </a> </b>
+                        </div>
+                    </li>`
                     html_string += li
                 }
+                console.log("######", responseJson.result)
                 console.log(html_string)
                 document.querySelector(".result").innerHTML = html_string
 

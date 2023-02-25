@@ -3,43 +3,95 @@
 {% block title %} Log In/ Sign up {% endblock %}
 
 {% block body %}
-
+<div class="container-fluid plan-trip-background" style="margin-top: -50px; height: 100%;">
+<div class="container" style="margin-top: 50px; height: 100%;">
+<div class="page-margin">
+    
+    <br>
+    <br>
     <h2> Log In </h2>
     <form action="/login" method="POST">
         <p>
             <input name="request_url" value={{ request_url }} hidden>
         </p>
+        
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="email">
+                    Email
+                </label>
+                <input class="form-control" id="EmailInput" type="text" name="email">
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="password">
+                    Password 
+                </label>
+                <input class="form-control" id="PasswordInput" type="password" name="password">
+            </div>
+        </div>
+
+        <br>
+
         <p>
-            Email <input type="text" name="email">
-        </p>
-        <p>
-            Password <input type="password" name="password">
-        </p>
-        <p>
-            <input type="submit">
+            <input type="submit" class="btn btn-success">
         </p>
     </form>
 
+    <br>
+    <br>
 
     <h2> Sign Up </h2>
     <form action="/signup" method="POST">
         <p>
             <input name="request_url" value={{ request_url }} hidden>
         </p>
-        <p> 
-            First Name <input type="text" name="fname" required> 
-            Last Name <input type="text" name="lname" required> 
-        </p>
+        <div class="row name-signup">
+            <div class="col-md-3">
+                <label for="FirstNameSignUp" class="form-label">
+                    First Name 
+                </label>
+                <input class="form-control" type="text" name="fname" required> 
+            </div>
+            
+
+            <div class="col-md-3">
+                <label for="LastNameSignUp" class="form-label">
+                    Last Name 
+                </label>
+                <input class="form-control" type="text" name="lname" required> 
+            </div>
+        </div>
+
+        <div class="row email-signup">
+            <div class="col-md-3">
+                <label for="EmailSignUp" class="form-label">
+                    Email 
+                </label>
+                <input class="form-control" type="text" name="email" required>
+            </div>
+        </div>
+        <div class="row password-signup">
+            <div class="col-md-3">
+                <label for="PasswordSignUp" class="form-label">
+                    Password
+                </label>
+                <input class="form-control" type="password" name="password" required>
+            </div>
+        </div>
+
+        <br> 
 
         <p>
-            Email <input type="text" name="email" required>
-        </p>
-        <p>
-            Password <input type="password" name="password" required>
-        </p>
-        <p>
-            <input type="submit">
+            <input type="submit" class="btn btn-success">
         </p>
     </form>
+
+<br>
+</div>
+</div>
+</div>
 
 {% endblock %}

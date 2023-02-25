@@ -16,49 +16,68 @@
         <link rel="stylesheet" href="/static/css/maps.css"/>
         <link rel="stylesheet" href="/static/css/navigation.css"/>
         <link rel="stylesheet" href="/static/css/park-details-scroll.css"/>
+        <link rel="stylesheet" href="/static/css/homepage.css"/>
         
     </head>
 
-    <body>
-        {% for msg in get_flashed_messages() %}
+    <body class="body-padding">
+        <!-- {% for msg in get_flashed_messages() %}
         <p class="flash-msg">
             {{ msg }} 
         </p>
-        {% endfor %}
+        {% endfor %} -->
+
+        <div id="flash-messages" style="padding-left: 18rem; color: white; background-color: forestgreen; margin-bottom: -10px;">
+            <h3>
+           {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                 {% for message in messages %}
+                    <b style="font-size: 22px;">{{ message }}</b>
+                 {% endfor %}
+              {% endif %}
+           {% endwith %}
+          </h3>
+          </div>
 
         <div id="navigation"> 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
+            
+            <div class="navbar-margin-left">
+                <a class="navbar-brand" href="/" id="home"> Parks </a>
+            </div>
+            
+                <div class="d-flex" id="navbarSupportedContent">
+                <div class="navbar-margin-right">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" id="search-icon">
+                            <a class="nav-link active" aria-current="page" href="/search" id="search"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                  </svg>
+                                  Search for a park</a>
+                        </li>
 
-            <a class="navbar-brand" href="/" id="home"> Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/search" id="search"> Search for a park</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/login" id="login"> Login</a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login" id="login"> Login</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            User
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="/profile" id="my_profile"> My Profile</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/plan-trip" id="plan-trip"> Plan a trip!</a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="/logout" id="logout"> Logout </a>
-                            </li>
+                        <li class="nav-item dropdown" id="navbar-dropdown-width">
+                            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                User
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="height: fit-content; overflow-y: unset;">
+                                <li>
+                                    <a class="dropdown-item" href="/profile" id="my_profile"> My Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/plan-trip" id="plan-trip"> Plan a trip!</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="/logout" id="logout"> Logout </a>
+                                </li>
+                </div>
                 </div>
             </nav>
         </div>

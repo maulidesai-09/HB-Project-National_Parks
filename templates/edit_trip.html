@@ -2,74 +2,143 @@
 
 {% block title %} Edit Trip {% endblock %}
 
-{% block body %} 
+{% block body %}
+<div class="container-fluid plan-trip-background" style="margin-top: -50px">
+<div class="container" style="margin-top: 50px;">
+<div class="page-margin plan-trip-content">
 
-<h1> Edit your trip! </h1>
+    <br>
+    <br>
+    <h1> Edit Your Trip </h1>
+    <br>
 
-    <form action="/trip/{{ trip.id }}/trip-details-edited" name="trip-edited" method="GET"> 
+        <form action="/trip/{{ trip.id }}/trip-details-edited" name="trip-edited" method="GET"> 
 
-        <div class="trip-name">
-            <h3> Trip Name: </h3>
-                <input type="text" id="trip-name" name="trip-name" value="{{ trip.trip_name }}">
-                <p id="trip-id" hidden> {{ trip.id }} </p>
-        </div>
+            <div class="trip-name">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="trip-name">                   
+                            <h4> Trip Name </h4>
+                        </label>
+                
+                    <input type="text" class="form-control plan-trip-input" id="trip-name" name="trip-name" value="{{ trip.trip_name }}">
+                    <p id="trip-id" hidden> {{ trip.id }} </p>
+                    </div>
+                </div>
+            </div>
 
-        <br>
-        <br>
+            <br>
+            <br>
 
-        <div class="park">
-            <h3> Select a Park </h3>
-                <select name="park" id="park-name" placeholder="Select a park..">
-                    <option  id="pre-populated-option-park" value="{{ trip.park.id }}"> {{ trip.park.park_name }} </option>
-                    <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
-                    {% for park in parks %}
-                    <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
-                    {% endfor %}
-            </select>
+            <div class="dates">
+                <div class="form-group row">
+                    <div class="col-md-4" style="text-align: left;">
+                        <label for="trip-select-dates">
+                            <h4> Pick your dates: </h4>
+                        </label>
+                    </div>
+                </div>
 
-        <br>
-        <br>
+                <div style="display: inline; font-size: large;">        
+                    Start Date: 
+                </div>
+                <input type="date" name="start-date" value="{{ trip.start_date }}" id="start-date" 
+                    class="form-control plan-trip-input" style="display: inline; width: auto;" required>
+                
+                <div style="margin-left: 20px; display: inline; font-size: large;">
+                    End Date: 
+                </div>
+                <input type="date" name="end-date" value="{{ trip.end_date }}" id="end-date" 
+                    class="form-control plan-trip-input" style="display: inline; width: auto;" required>
+            </div>
 
-        <div class="dates">
-            <h3> Pick your dates: </h3>
+            <br>
+            <br>
 
-            Start Date: <input type="date" name="start-date" value="{{ trip.start_date }}" id="start-date" required>
-            End Date: <input type="date" name="end-date" value="{{ trip.end_date }}" id="end-date" required>
-        </div>
+            <div class="park">
+                <div class="form-group row">
+                    <div class="col-md-4" style="text-align: left;">
+                        <label for="trip-select-park">                                       
+                            <h4> Select a Park </h4>
+                        </label>
 
-        <br>
-        <br>
+                    <div class="dropdown trip-select-park">
+                        
+                        <select name="park" id="park-name" placeholder="Select a park.."
+                        class="state-name btn btn-light dropdown-toggle plan-trip-input" aria-expanded="false">
+                            
+                            <option class="dropdown-item" id="pre-populated-option-park" value="{{ trip.park.id }}"> {{ trip.park.park_name }} </option>
 
-        <div class="dropdown trip-attractions"> 
-            <h3> Add Things To Do </h3>
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-                Select Things To Do
-            </button>
-            <ul class="dropdown-menu"> 
-                {% for attraction in main_attractions %}
-                <a class="dropdown-item small" href="#" data-value="{{ attraction.id }}" tabIndex="-1"> 
-                    <input type="checkbox" class="checkbox-attraction" name="attraction" value="{{ attraction.id }}" {%if attraction.title in list_of_saved_attraction_names %} checked {% endif %}/> &nbsp;{{ attraction.title }} 
-                </a>
-                {% endfor %}
-            </ul>
-        </div>
+                            <option class="dropdown-item" id="default-option-park" value="Select a park.."> 
+                                Select a park.. 
+                            </option>
+                            {% for park in parks %}
+                            <option class="dropdown-item" id="selected-option" value="{{ park.id }}" > 
+                                {{ park.park_name }} 
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
+                </div>
+            </div>
 
-        <br>
-        <br>
+            <br>
+            <br>
 
-        <div class="Notes">
-            <h3> Trip Details </h3>
+            <div class="dropdown trip-attractions">
+                <div class="form-group row">
+                    <div class="col-md-4" style="text-align: left;">
+                        <label for="trip-select-things-to-do">                                       
+                            <h4> Add Things To Do </h4>
+                        </label>
 
-            <textarea name="notes" id="notes" wrap="hard" style="width: 500px; height: 200px;">{{ trip.notes }} </textarea>
+                        <button class="btn btn-light dropdown-toggle plan-trip-input" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                            Select Things To Do
+                        </button>
+                        <ul class="dropdown-menu trip-things-dropdown"> 
+                            {% for attraction in main_attractions %}
+                            <a class="dropdown-item small" href="#" data-value="{{ attraction.id }}" tabIndex="-1"> 
+                                <input type="checkbox" class="checkbox-attraction" name="attraction" value="{{ attraction.id }}" {%if attraction.title in list_of_saved_attraction_names %} checked {% endif %}/> &nbsp;{{ attraction.title }} 
+                            </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="Notes">
+                <div class="form-group row">
+                    <div class="col-md-6" style="text-align: left;">
+                        <label for="trip-select-notes">                                       
+                            <h4> Notes </h4>
+                        </label>
+
+                        <textarea name="notes" id="notes" wrap="hard" class="form-control plan-trip-input" 
+                        style="width: 500px; height: 200px;">{{ trip.notes }}
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class = "submit">
+                <input type="submit" name="trip" id="trip" value="Save Changes" class="btn btn-success">
+            </div>
         
-        </div>
+        </form>
 
-        <div class = "submit">
-            <input type="submit" name="trip" id="trip" >
-        </div>
-    
-    </form>
+<br>
+</div>
+</div>
+</div>
+
 
     <!-- JS -->
     <script src="/static/js/trip.js"> </script>

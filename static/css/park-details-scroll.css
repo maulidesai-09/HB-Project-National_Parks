@@ -5,6 +5,7 @@
     color: white;
     padding: 5px;
     height: 36px;
+    width: 100%;
 
     white-space: nowrap;
 }

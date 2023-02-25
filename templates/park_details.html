@@ -10,22 +10,31 @@
 {% endblock %}
 
 {% block body %}
+<div class="container-fluid" style="overflow-x: hidden; width: 100%;">
 
-    <h1 id="park_name"> {{ park.park_name }} </h1>
-    <p id="park_id" hidden> {{ park.id }} </p>
+    <div class="row park-details-main-image">
+        <div class="park-details-cover-image" 
+            style="height: 500px;
+                    background-image: url(/static/img/cover/{{park.park_code}}_1.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: 50% 50%;">
+        </div>
+        <div class="park-details-name-background-alignment">
+        </div>
+        
+        <div class="park-details-name-alignment">
+            <h1 id="park_name"> {{ park.park_name }} </h1>    
+        </div>
 
-    <div class="fav-wish-buttons">
-        <form action="/parks/{{ park.id }}/favorite" name="favorite" method="POST"> 
-            <input type="submit" name="user_favorite" id="user_favorite" value="Add to Favorites" >
-        </form>
+    </div>  <!-- image row -->  
 
-        <form action="/parks/{{ park.id }}/wishlist" name="wishlist" method="POST"> 
-            <input type="submit" name="user_wishlist" id="user_wishlist" value="Add to Wishlist"> 
-        </form>
-    </div>
+    <div class="row park-name">
+        <!-- <h1 id="park_name"> {{ park.park_name }} </h1> -->
+        <p id="park_id" hidden> {{ park.id }} </p>
+    </div>  <!-- park-name row -->  
 
-
-    <p>
+    <p style="margin-top: 0; margin-bottom: 0;">
         <b> Alerts: </b>
             <div class="scroll-container">
                 <p class="scroll-text"> 
@@ -36,20 +45,37 @@
             </div>
     </p>
 
+    <br>
+    
+    <div class="row contents">
+    <div class="fav-wish-buttons pd-content-alignment">
+        <form action="/parks/{{ park.id }}/favorite" name="favorite" method="POST"> 
+            <input type="submit" name="user_favorite" id="user_favorite" value="Add to Favorites" 
+                class="btn btn-success">
+        </form>
 
-    <p>
-        <b> General Information: </b>
-        <p> {{ park.general_info }} </p>
+        <form action="/parks/{{ park.id }}/wishlist" name="wishlist" method="POST"> 
+            <input type="submit" name="user_wishlist" id="user_wishlist" value="Add to Wishlist" 
+            class="btn btn-success"> 
+        </form>
+    </div> 
+
+    
+    <p class="pd-content-alignment">
+        <br>
+        <h4 class="pd-content-alignment">General Information: </h4>
+        <p class="pd-content-alignment"> {{ park.general_info }} </p>
     </p>
 
-
-    <p>
-        <b> Main Attractions: </b>
-            <ul>
+    <br>
+    
+    <p class="pd-content-alignment">
+        <h4 class="pd-content-alignment">Main Attractions: </h4>
+            <ul class="list-group" style="margin: 10px">
                 {% for attraction in main_attractions %}
-                    <li> 
-                        <a href="" class="attraction" id="{{ attraction.id }}"> {{ attraction.title }} </a>
-                        <div class="result_attraction_details" id="result_{{ attraction.id }}"> </div>
+                    <li class="list-group-item pd-content-alignment"> 
+                        <b><a href="" class="attraction" id="{{ attraction.id }}"> {{ attraction.title }} </a></b>
+                        <div class="result_attraction_details pd-content-alignment" id="result_{{ attraction.id }}"> </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -59,18 +85,21 @@
     <p id="lat" hidden> {{ park.location_lat }} </p>
     <p id="long" hidden> {{ park.location_long }} </p>
 
+</div> <!-- contents row -->
+</div> <!-- container -->
 
-    <p>
-        <b> Location: </b>
+    <p class="pd-content-alignment">
+        <h4 class="pd-content-alignment">Location: </h4>
     </p>
 
-    <section class="map">
+    <section class="map pd-content-alignment">
         <div id="map"></div>
     </section>
 
+    
+    <div id="react_container" class="pd-content-alignment" style="margin-top: -54px;"> </div>
 
-    <div id="react_container"> </div>
-
+    <br>
 
     
     <!-- JS -->
@@ -84,5 +113,6 @@
     <script src="/static/js/park-details.js"> </script>
 
     <script src="/static/js/review-comments.jsx" type="text/jsx"></script>
+
 
 {% endblock %}

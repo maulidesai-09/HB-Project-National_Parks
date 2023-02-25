@@ -3,59 +3,173 @@
 {% block title %} {{ user.fname }} {{ user.lname }} - Details {% endblock %}
 
 {% block body %}
+<div class="container-fluid user-details-image" style="margin-top: -50px;">
+<div class="container" style="margin-top: 50px;">
+<!-- <div class="page-margin"> -->
 
-    <h1> Hello {{ user.fname }} {{ user.lname }}! </h1>
+    <br>
+    <br>
+    <div class="row">
+        <h1> Hello {{ user.fname }}! </h1>
+    </div>
 
-    <p>
-        <b> Email: </b>
-        <p> {{ user.email }} </p>
-    </p>
+    <br> 
+    <br>
 
-    
-    <p>
-        <b> Favorites </b>
-            <ul>
+    <div class="col-6">
+        <h4> <div class="user-profile-list-title"> User Details </div> </h4>
+            <ul class="list-group">
+                <li class="list-group-item user-profile-list"> 
+                    <div style="display: inline;"> 
+                        <div class="row">
+                            <div class="col-10 user-profile-list-shadow">
+                                <b> E   mail: </b> {{ user.email }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="list-group-item user-profile-list"> 
+                    <div style="display: inline;"> 
+                        <div class="row">
+                            <div class="col-10 user-profile-list-shadow">
+                                <b> First Name:</b> {{ user.fname }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="list-group-item user-profile-list"> 
+                    <div style="display: inline;">
+                        <div class="row">
+                            <div class="col-10 user-profile-list-shadow">                        
+                                <b> Last Name: </b> {{ user.lname }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+    </div>
+
+    <br>
+    <br>
+        
+        <div class="col-6">
+        <h4> <div class="user-profile-list-title"> Favorites </div> </h4>
+            <ul class="list-group">
                 {% for favorite in user.favorites %}
-                <li> 
-                    <a href="/parks/{{ favorite.park.id}}"> {{ favorite.park.park_name }} </a>
-                        <form style="display: inline-block;" action="/parks/{{ favorite.park.id }}/remove_favorite" name="form_remove_fav">
-                            <input type="submit" id="remove_fav" value="Remove from Favorites"> </button>
-                        </form>
+                <li class="list-group-item user-profile-list"> 
+                    <div class="row">
+                        <div class="col-10 user-profile-list-shadow">
+                           <b> <a href="/parks/{{ favorite.park.id}}" class="user-profile-style"> {{ favorite.park.park_name }} </a> </b>
+                        </div>
+                        
+                        <div class="col-2">
+                            <form style="display: inline-block;" action="/parks/{{ favorite.park.id }}/remove_favorite" name="form_remove_fav">
+                                <input type="submit" id="remove_fav" value="Remove" class="btn btn-danger btn-sm">
+                            </form>
+                        </div>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
-    </p>
-
+        </div>
+        
+    <br> 
 
     <p>
-        <b> Wishlist </b>
-            <ul>
+        <div class="col-6">
+        <h4> <div class="user-profile-list-title"> Wishlist </div> </h4>
+            <ul class="list-group">
                 {% for wish in user.wishlists %}
-                <li> 
-                    <a href="/parks/{{ wish.park.id }}"> {{ wish.park.park_name }} </a>
-                    <form style="display: inline-block;" action="/parks/{{ wish.park.id }}/remove_wish" name="form_remove_wish">
-                        <button id="remove_wish"> Remove from Wishlist </li>
-                    </form>
-                {% endfor %}
-            </ul>
-    </p>
-
-
-    <b> Trips </b>
-            <ul>
-                {% for trip in user.trips %}
-                <li>
-                     <a href="/trip/{{ trip.id }}">
-                        {{ trip.trip_name }} 
-                    </a>
-                    <form style="display: inline-block;" action="/trip/{{ trip.id }}/remove_trip" name="form_remove_trip">
-                        <button id="remove_trip"> Remove Trip
-                    </form>
-                    <form style="display: inline-block;" action="/trip/{{ trip.id }}/edit_trip" name="form_edit_trip">
-                        <button id="edit_trip"> Edit Trip 
-                    </form>
+                <li class="list-group-item user-profile-list">
+                    <div class="row">
+                        <div class="col-10">
+                            <b> <a href="/parks/{{ wish.park.id }}" class="user-profile-style"> {{ wish.park.park_name }} </a> </b>
+                        </div>
+                        <div class="col-2">
+                            <form style="display: inline-block;" action="/parks/{{ wish.park.id }}/remove_wish" name="form_remove_wish">
+                                <button id="remove_wish" class="btn btn-danger btn-sm"> Remove </button>
+                            </form>
+                        </div>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
+        </div>
+    </p>
 
+    <br> 
+    
+    <div class="col-6">
+    <h4> <div class="user-profile-list-title">  Trips </div> </h4>
+            <ul class="list-group">
+                {% for trip in user.trips %}
+                <li class="list-group-item user-profile-list">
+                    <div class="row">
+                        <div class="col-8">
+                            <b> <a href="/trip/{{ trip.id }}" class="user-profile-style">
+                                {{ trip.trip_name }} 
+                            </a> </b>
+                        </div>
+
+                        <div class="col-2">
+                            <form style="display: inline-block;" action="/trip/{{ trip.id }}/edit_trip" name="form_edit_trip">
+                                <button id="edit_trip" class="btn btn-warning btn-sm"> Edit Trip </button>
+                            </form>
+                        </div>
+
+                        <div class="col-2">
+                            <form style="display: inline-block;" action="/trip/{{ trip.id }}/remove_trip" name="form_remove_trip">
+                                <button id="remove_trip" class="btn btn-danger btn-sm"> Remove </button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+    </div>
+
+    <!-- <div class="col-4"></div> -->
+
+    <br>
+
+    <p>
+        <div class="col-6">
+        <h4><div class="user-profile-list-title"> Reviews </div></h4>
+
+            <ul class="list-group">
+                {% for review in user.review_comments %}
+                <li class="list-group-item user-profile-list">
+                    <div class="row">
+                        <div class="col-9">
+                            <p><b>
+                                <a class="user-profile-style" data-bs-toggle="collapse" href="#collapseReviewComment{{review.id}}" role="button" aria-expanded="false" aria-controls="collapseReviewComment{{review.id}}">
+                                Park: {{ review.park.park_name }} </a>
+                            </b></p>
+                            
+                            <div class="collapse" id="collapseReviewComment{{review.id}}"> 
+                                <div class="card card-body user-profile-list">
+                                    {{ review.review }} 
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-3">
+                            <a href="/parks/{{ review.park.id }}" class="btn btn-success user-profile-style"> View Park </a></p>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </p>
+
+
+
+
+<br>
+</div>
+</div>
+</div>
 {% endblock %}

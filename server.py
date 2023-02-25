@@ -620,6 +620,7 @@ def advance_search_result_ajax():
                 park_dict['park_name'] = park.park_name
                 park_dict['park_lat'] = park.location_lat
                 park_dict['park_long'] = park.location_long
+                park_dict['park_code'] = park.park_code
                 result.append(park_dict)
     
             #     result.append(park.toDict())
@@ -718,12 +719,15 @@ def logout():
                 flash("You have been succesfully logged out!")
                 return redirect(request.referrer)
         else:
-            return "User not logged in"
+            flash("User not logged in")
+            return redirect(request.referrer)
     else:
         if "user_email" in session:
             flash("You have not been logged out")
+            return redirect(request.referrer)
         else:
             flash("User not logged in")
+            return redirect(request.referrer)
 
 
 
@@ -777,7 +781,7 @@ def remove_from_favorite(id):
 
 
 @app.route("/parks/<id>/wishlist", methods=["POST"])
-def add_to_wishlist(user_id, id):
+def add_to_wishlist(id):
     """ Add a park to user's wishlist """
 
     logged_in_email = session.get("user_email")
@@ -842,8 +846,10 @@ def get_main_attractions_for_trip():
     """ Get main attractions to be displayed based on park selected """
     
     park_id = request.args.get("park_id", "")
+    print("###############", park_id)
 
     park_code = crud.get_park_code_by_id(park_id)
+    print("###############", park_code)
 
     url = "https://developer.nps.gov/api/v1/thingstodo"
     payload = {"api_key": API_KEY}
@@ -860,6 +866,8 @@ def get_main_attractions_for_trip():
         attraction['id'] = thing['id']
         attraction['title'] = thing['title']
         main_attractions.append(attraction)
+    
+    print("###############", main_attractions)
 
     return render_template("plan_trip-main_attractions.html", 
                            main_attractions = main_attractions)
@@ -1099,6 +1107,12 @@ def saved_edited_trip(id):
                         )
 
 
+# @app.route("/trip/<id>/edit_trip_return_profile")
+# def back_to_profile(id):
+#     """ Return to user profile page """
+
+#     redirect(f"/parks/{id}")
+
 
 @app.route("/parks/<id>/review-comments")
 def get_review_comments_for_park(id):
@@ -1111,7 +1125,7 @@ def get_review_comments_for_park(id):
         review_comment = {}
         review_comment['id'] = comment.id
         review_comment['review'] = comment.review
-        review_comment['user'] = comment.user.fname + " " + comment.user.lname
+        review_comment['user'] = comment.user.fname + "  " + comment.user.lname
         review_comments.append(review_comment)
 
     return jsonify({"review_comments": review_comments})

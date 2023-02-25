@@ -3,11 +3,9 @@
 function ReviewComment(props) {
     return (
         <div className="comment">
+            <p className="comment-text"> {props.review} </p>
             <br></br>
-            <p> {props.review} </p>
-            <br></br>
-            <p> By: {props.user} </p>
-            <p> -------------------------------------------------------------------------------------- </p>
+            <p className="comment-text"> <b> By: {props.user} </b></p>
 
         </div>
     )
@@ -39,10 +37,9 @@ function AddReviewComment(props) {
     return (
         <React.Fragment>
             <br></br>
-            <br></br>
             <b> Add New Review: </b>
             <br></br>
-            <label htmlFor="reviewInput"> Review </label>
+            <label htmlFor="reviewInput"></label>
             <textarea
             value={review}
             onChange={(event) => setReview(event.target.value)}
@@ -50,9 +47,10 @@ function AddReviewComment(props) {
             wrap="hard" 
             style={{ width: "500px", height: "200px" }}
             ></textarea>
+            <br></br>
 
-            <button style={{ marginLeft: "10px" }} onClick={addNewReviewComment}>
-                Add
+            <button class="btn btn-success" onClick={addNewReviewComment}>
+                Submit Review
             </button>
         </React.Fragment>
     )
@@ -97,8 +95,7 @@ function ReviewCommentContainer() {
 
     return (
         <React.Fragment>
-            <b> Reviews: </b>
-            <br></br>
+            <h4> Reviews: </h4>
             <div className="review_comments_css"> {reviewComments} </div>
             <AddReviewComment addComment={addComment}/>
         </React.Fragment>

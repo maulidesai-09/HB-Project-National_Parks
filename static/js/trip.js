@@ -25,13 +25,16 @@ park_element.addEventListener('change', (evt) => {
     evt.preventDefault()
 
     const selected_park_id = park_element.value
+    console.log(park_element)
+    console.log(selected_park_id)
 
     const url = `/app/plan-trip/ajax?park_id=${selected_park_id}`
 
     fetch(url)
     .then((response) => response.text())
     .then((responseText) => {
-        document.querySelector(".dropdown-menu").innerHTML = responseText
+        document.querySelector(".trip-things-dropdown").innerHTML = responseText
+        console.log(responseText)
     })
 })
 

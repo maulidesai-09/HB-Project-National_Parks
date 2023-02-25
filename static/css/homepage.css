@@ -1,0 +1,335 @@
+/* CSS for body padding */
+
+.body-padding {padding-top: 56px;}
+
+.page-margin {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+
+/* CSS for homepage */
+
+.homepage-image {
+    height: 600px;
+    background-image: url(/static/img/homepage-yellowstone.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.homepage-cover-image {
+    position: relative;
+}
+
+.homepage-quote-background-alignment {
+    position: absolute;
+    height: 50px;
+    bottom: 5px;
+    left: 0;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+    opacity: 0.5;
+    ;
+}
+
+.homepage-quote-alignment {
+    max-width: fit-content;
+    position: absolute;
+    bottom: 2px;
+    left: 20px;
+    color: seashell;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.homepage-grid {
+    display: grid;
+    width: 350px;
+    height: 250px;
+    padding: 5px;
+    margin-left: -35px;
+    margin-right: 20px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    /* border: 1px; */
+    /* border-style: ridge; */
+    background-color: #8fbc8f59;
+}
+
+.homepage-title {
+    text-align: center;
+    color: forestgreen;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+.homepage-options-image {
+    height: 215px;
+    width: 338px;
+}
+
+
+/* CSS for Search Page */
+
+.search-image {
+    height: 350px;
+    background-image: url(/static/img/homepage-yellowstone.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    filter: blur(3px) grayscale(20%);
+}
+
+.search-cover-image {
+    position: relative;
+}
+
+/* .search-quote-background-alignment {
+    position: absolute;
+    height: 50px;
+    bottom: 5px;
+    left: 0;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+    opacity: 0.5;
+    ;
+} */
+
+.search-quote-alignment {
+    position: absolute;
+    max-width: fit-content;
+    /* bottom: 50%;
+    left: 39.5%; */
+    top: 50%;
+    left: 50%;
+    color: seashell;
+    transform: translate(-50%, -50%);
+    /* padding-left: 20px;
+    padding-right: 20px; */
+}
+
+/* .search-quote-alignment {
+    position: absolute;
+    bottom: 2px;
+    left: 20px;
+    color: seashell;
+    padding-left: 20px;
+    padding-right: 20px;
+} */
+
+.dropdown-toggle-park-name{
+    border: 1px;
+    border-style: solid;
+    border-color: grey;
+    --bs-btn-hover-border-color: grey;
+    --bs-btn-hover-bg: white;
+}
+
+.dropdown-toggle{
+    border: 1px;
+    border-style: solid;
+    border-color: grey;
+    --bs-btn-hover-border-color: grey;
+}
+
+.dropdown-item{
+    text-align: left;
+}
+
+.search-align {
+    text-align: center;
+}
+
+.advance-search-align {
+    text-align: center;
+}
+
+.form-container-state-activity-topic {
+    text-align: center;
+}
+
+
+.dropdown-menu.show {
+    display: block;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+/* .search-titles-align-state {
+    padding-left: 70px;
+    text-align: left;
+}
+
+.search-titles-align-activity {
+    padding-left: 41px;
+    text-align: left;
+} */
+
+
+.list-group-item {
+    --bs-list-group-border-color: white;}
+
+
+
+/* CSS for 'View All Parks' page */
+
+.all-parks-grid {
+    display: grid;
+    width: 260px;
+    padding: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px;
+    border-style: ridge;
+    background-color: #8fbc8f7d;
+}
+
+
+/* CSS for 'Park Details' page */
+
+.park-details-main-image {
+    position:relative
+}
+
+.park-details-name-background-alignment {
+    position: absolute;
+    height: 80px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+    opacity: 0.5;
+    ;
+}
+
+.park-details-name-alignment {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.pd-content-alignment {
+    margin: auto;
+    width: 80%;
+}
+
+.comment {
+    border:darkgrey;
+    border-style: solid;
+    border-width: 1.5px;
+    margin-bottom: 15px;
+}
+
+.comment-text {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.pd-content-alignment.list-group-item {
+    --bs-list-group-border-color: lightgrey;}
+
+.attraction {
+    color: forestgreen;
+}
+
+
+.user-profile-style {
+    color: black;}
+
+
+.trip-details-things {
+    /* --bs-list-group-border-color: lightgrey; */
+    border: none;
+    background-color: transparent;
+}
+
+
+/* CSS for search page */
+
+/* .search-page-image {
+    height: 250px;
+    background-image: url(/static/img/search-page-cover.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+} */
+
+
+/* CSS for 'User Details' page */
+
+.user-details-image {
+    background-image: url(/static/img/background-forest-blur.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.user-profile-list {
+    background-color: #8fbc8f7d;
+    margin: 0.2rem;
+    --bs-list-group-border-color: transparent;
+}
+
+/* .user-profile-list-shadow {
+    box-shadow: ;
+} */
+
+.user-profile-list-title {
+    /* background-color:#cf1a2bad; */
+    background-color: darkseagreen;
+    margin: 0.2rem;
+    --bs-list-group-border-color: transparent;
+    color: black;
+    border-radius: 4px;
+    text-indent: 5px;
+}
+
+
+
+/* CSS for Plan Trip */
+
+.plan-trip-background {
+    background-image: url(/static/img/background-forest-blur.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.trip-name-width {
+    width:500px
+}
+
+.plan-trip-content {
+    background-color: #8fbc8f7d;
+    height: 100%;
+    margin-left: 10rem;
+    margin-right: 20rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.plan-trip-input {
+    border-color: transparent;
+}
+
+
+/* CSS for 'Trip Details' page */
+
+.trip-details-button {
+    font-weight: bold;
+    color: forestgreen;
+    margin-left: -10px;
+}

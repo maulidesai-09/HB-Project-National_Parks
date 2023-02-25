@@ -13,7 +13,7 @@ function initMap() {
     console.log(parkCoords)
 
     const parkInfo = `
-    <h1> ${parkName} </h1>
+    <h6> ${parkName} </h6>
     <p>
     Located at: <code> ${parkLat} </code>
                 <code> ${parkLong} </code>

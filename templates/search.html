@@ -4,78 +4,166 @@
 
 {% block body %}
 
-    <h1> Search for a Park </h1>
+<div class="container-fluid">
+
+    <div class="row search-cover-image">
+        <div class="search-image"> </div>
+        
+            <div class="search-quote-alignment search-align">
+
+                <div style="text-align:center"> 
+                    <h1>Search For a Park</h1> 
+                </div>
+
+                <div class="col-md-12">
+                    <label for="SelectParkFromDropdown" class="form-label"> </label>
+                    
+                    <div class="dropdown">
+                        <select name="park" id="park-name" placeholder="Select a park name.." 
+                        class="btn btn-light dropdown-toggle-park-name" aria-expanded="false">
+                            <option class="dropdown-item" id="default-option-park" value="Select a park.."> 
+                                Select a park.. 
+                            </option>
+                                {% for park in all_parks %}
+                            <option class="dropdown-item" id="selected-option" value="{{ park.id }}" >
+                                {{ park.park_name }} 
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container search-align">
+
+    <!-- <h1> Search For a Park </h1>
 
     <div class="form-container">
-        <p>
-            Select a park <select name="park" id="park-name" placeholder="Select a park name..">
-                <option  id="default-option-park" value="Select a park.."> Select a park.. </option>
-                    {% for park in all_parks %}
-                <option id="selected-option" value="{{ park.id }}" > {{ park.park_name }} </option>
-                {% endfor %}
-            </select>
-        </p>
-    </div>
+        <div class="row search-by-park">
+            <div class="col-md-12">
+                <label for="SelectParkFromDropdown" class="form-label">
+                </label>
+                
+                <div class="dropdown">
+                    <select name="park" id="park-name" placeholder="Select a park name.." 
+                    class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <option class="dropdown-item" id="default-option-park" value="Select a park.."> 
+                            Select a park.. 
+                        </option>
+                            {% for park in all_parks %}
+                        <option class="dropdown-item" id="selected-option" value="{{ park.id }}" >
+                            {{ park.park_name }} 
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div> -->
 
-
+    <br>
+    
     <form class="form" method="GET" action="/search/advance_search_result">
-        <h2> Search </h2>
+        <!-- <h3> Search: </h3> -->
 
-        <div class="form-container-state">
-            <p>
-                By State <select name="state" class="state-name" placeholder="Select a state..">
-                    <option id="default-option-state" value="">Select a state..</option>
-                    {% for state in all_states %}
-                        <option id="selected-state" value="{{ state }}"> {{ state }} </option>
-                    {% endfor %}
-                </select>
-            </p>
+        <div class="form-container-state-activity-topic">
+            <div class="row search-by-state-activity-topic">
+                <div class="col-md-4" style="text-align: center;">
+                    <div class="search-titles-align-state">
+                    <h5> <label for="SelectStateFromDropdown" class="form-label">
+                        By State 
+                    </label> </h5>
+                    </div>
+                    
+                    <div class="dropdown state">
+                        <select name="state" placeholder="Select a state.." 
+                        class="state-name btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <option class="dropdown-item" id="default-option-state" value="">
+                                Select a state..
+                            </option>
+                            {% for state in all_states %}
+                                <option class="dropdown-item" id="selected-state" value="{{ state }}">
+                                    {{ state }} 
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                
+                <div class="col-md-4" style="text-align: center;">
+                    <div class="search-titles-align-activity">
+                    <h5> <label for="SelectActivityFromDropdown" class="form-label">
+                        By Activity 
+                    </label> </h5>
+                    </div>
+
+                    <div class="dropdown activity">
+                        <button class="btn btn-white dropdown-toggle" type="button" data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                            Select activity
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for activity in all_activities %}
+                            <li> 
+                                <a class="dropdown-item small" href="#" data-value="{{ activity }}" tabIndex="-1"> 
+                                    <input type="checkbox" class="checkbox-activity" name="activity" value="{{ activity }}"/> &nbsp;{{ activity }} 
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+    
+                
+                <div class="col-md-4" style="text-align: center;">
+                    <div class="search-titles-align-topic">
+                    <h5> <label for="SelectTopicFromDropdown" class="form-label">
+                        By Topic 
+                    </label>
+                    </div> </h5>
+
+                    <div class="dropdown topic">
+                        <button class="btn btn-white dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Select topic
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for topic in all_topics %}
+                            <li> 
+                                <a class="dropdown-item small" href="#" data-value="{{ topic }}" tabIndex="-1"> 
+                                    <input type="checkbox" class="checkbox-topic" name="topic" value="{{ topic }}"/> &nbsp;{{ topic }} 
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="dropdown activity">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
-            aria-expanded="false">
-            Select activity
-            </button>
-            <ul class="dropdown-menu">
-                {% for activity in all_activities %}
-                <li> 
-                    <a class="dropdown-item small" href="#" data-value="{{ activity }}" tabIndex="-1"> 
-                        <input type="checkbox" class="checkbox-activity" name="activity" value="{{ activity }}"/> &nbsp;{{ activity }} 
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        
-
-        <div class="dropdown topic">
-            <button class="btn btn-secondary dropdown-toggle" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Select topic
-            </button>
-            <ul class="dropdown-menu">
-                {% for topic in all_topics %}
-                <li> 
-                    <a class="dropdown-item small" href="#" data-value="{{ topic }}" tabIndex="-1"> 
-                        <input type="checkbox" class="checkbox-topic" name="topic" value="{{ topic }}"/> &nbsp;{{ topic }} 
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-
+            
+        <br>
+        <br>
 
         <div class="form-container-submit">
             <p>
-                <input type="submit" name="search" id="search" value="Submit"> 
+                <input type="submit" name="search" id="search" value="Search" 
+                    class="btn btn-success btn-lg btn-block" style="width:180px"> 
             </p>
         </div>
     
     </form>
 
+    <br>
+    <br>
+
+    <h3> Select a State </h3>
+
+    <!-- Image and area coordinates obtained from nps.gov -->
     <form class="form-state-map" method="GET" action="/search/state_map_result">
         <img src="https://www.nps.gov/customcf/park-search/img/nat-map-final-1208.jpg" alt="National Map" width="100%" style="max-width:568px;" border="0" usemap="#search-map" />
         <map name="search-map" id="search-map">
@@ -142,9 +230,12 @@
         </map>
     </form>
 
+<br>
+<br>
 
     <!-- JS -->
     <script src="/static/js/search.js"> </script>
 
+</div>
 {% endblock %}
     

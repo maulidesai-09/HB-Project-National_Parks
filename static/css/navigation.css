@@ -1,5 +1,22 @@
-#navigation {position: absolute;
+/* #navigation {position: absolute;
         top: 8px;
-        right: 16px;}
+        right: 16px;} */
 
 /* #header {float: right} */
+
+.navbar-margin-left {margin-left: 50px;}
+
+.navbar-margin-right {margin-right: 50px;}
+
+.navbar-brand {font-size: 1.75rem;}
+.nav-link {
+        font-size: 1.25rem;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 30px;
+        padding-left: 30px;
+}
+
+/* #search-icon {display: inline-flex;
+                vertical-align: 500rem;} */

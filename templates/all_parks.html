@@ -3,14 +3,35 @@
 {% block title %} View All Parks {% endblock %}
 
 {% block body %}
-    <h1> View All Parks </h1>
+<div class="container-fluid" style="background: whitesmoke; margin-top: -40px;">
+<div class="container">
+<div class="page-margin">
 
-    <h2> List of Parks: </h2>
-    <ul> 
+    <br> 
+    <br> 
+
+    <div style="text-align: center;">
+        <h1> All Parks </h1>
+    </div>
+
+    <br>
+    
+    <ul style="display: inline-block; text-align: center;"> 
         {% for park in parks %}
-        <li> 
-            <a href="/parks/{{ park.id }}"> {{ park.park_name }} </a> 
+        <li style="display: inline-block; text-align: center;"> 
+            <div class="all-parks-grid">
+            <!-- <li class="col"> -->
+            <b><a href="/parks/{{ park.id }}" style="color: forestgreen; text-decoration: none;">
+                {{ park.park_name }} 
+                <img src="/static/img/icons/{{park.park_code}}_2.jpeg" style="height: 150px; width: 248px; margin-top: 0.5px;">
+            </a> </b>
+            </div>
         </li>
         {% endfor %}
     </ul>
+
+<br>
+</div>
+</div>
+</div>
 {% endblock %}

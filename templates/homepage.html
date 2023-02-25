@@ -1,16 +1,89 @@
 {% extends 'base.html' %}
 
-{% block title %} National Parks Homepage {% endblock %}
+{% block title %} Parks Homepage {% endblock %}
 
 {% block body %} 
-    <h1> Welcome! </h1>
 
-    <h2> Navigation </h2>
-        <ul>
-            <li> <a href="/parks"> View all National Parks </a></li>
-            <li> <a href="/search"> Search for a Park </a></li>
-            <li> <a href="/login"> Log In/ Sign up </a></li>
-            <li> <a href="plan-trip"> Plan a trip! </a></li>
-            <li> <a href="/users"> View all Users </a></li>
-        </ul>
+<div class="container-fluid" id="welcome">
+
+        <div class="row homepage-cover-image">
+            <div class="homepage-image"> </div>
+            <div class="homepage-quote-background-alignment">
+            </div>
+            
+            <div class="homepage-quote-alignment">
+                <h1 id="park_name"> Let Nature Be Nature </h1>    
+            </div>
+        </div>
+</div>
+
+<br>
+
+<div class="container-fluid" style="background: whitesmoke; margin-top: -23px; padding-bottom: 20px;">
+<div class="container">
+
+    <div class="row">
+        <div class="col-4">
+            <div class="homepage-options">
+                <!-- <ul style="display: inline-block;">
+                    <li style="display: inline-block;">  -->
+                        <div class="homepage-grid">
+                            <a href="/parks" class="homepage-title">
+                                View All National Parks
+                                <img src="/static/img/all-parks.jpg" class="homepage-options-image">
+                            </a>
+                        </div>
+                    <!-- </li>
+                </ul> -->
+            </div>
+        </div>
+
+
+        <div class="col-4">
+            <div class="homepage-options">
+                <!-- <ul style="display: inline-block;">
+                    <li style="display: inline-block;">  -->
+                        <div class="homepage-grid">
+                            <a href="/search" class="homepage-title">
+                                Search For a Park
+                                <img src="/static/img/search-park.jpg" class="homepage-options-image">
+                            </a>
+                        </div>
+                    <!-- </li>
+                </ul> -->
+            </div>
+        </div>
+
+
+        <div class="col-4">
+            <div class="homepage-options">
+                <!-- <ul style="display: inline-block;">
+                    <li style="display: inline-block;">  -->
+                        <div class="homepage-grid">
+                            <a href="/login" class="homepage-title">
+                                Log In / Sign Up
+                                <img src="/static/img/sample.jpg" class="homepage-options-image">
+                            </a>
+                        </div>
+                    <!-- </li>
+                </ul> -->
+            </div>
+        </div>
+
+
+        <!-- <div class="bottom-left">
+            <h2> Navigation </h2>
+                <ul>
+                    <li> <a href="/parks"> View all National Parks </a></li>
+                    <li> <a href="/search"> Search for a Park </a></li>
+                    <li> <a href="/login"> Log In/ Sign up </a></li>
+                    <li> <a href="plan-trip"> Plan a trip! </a></li>
+                    <li> <a href="/users"> View all Users </a></li>
+                </ul>
+        </div> -->
+
+    <br>
+    </div>
+</div>
+</div>
 {% endblock %}

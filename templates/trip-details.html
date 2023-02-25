@@ -3,6 +3,20 @@
 {% block title %} View Trip Details {% endblock %}
 
 {% block body %}
+<div class="container-fluid plan-trip-background" style="margin-top: -50px; height: 100%;">
+<div class="container" style="margin-top: 50px; height: 100%;">
+<div class="page-margin plan-trip-content" style="height: 100%;">
+
+    <br>
+    <br>
+    <form class="edit-trip-return-profile" method="GET" action="/users/{{ trip.user.user_id }}">
+        <div id="edit-trip-back-to-profile" style="text-align: right;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" style="color:forestgreen" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+              </svg>
+            <input class="btn btn-link trip-details-button" type="submit" id="edit-trip-return-profile" name="edit-trip-return-profile" value="Back To Profile">
+        </div>
+    </form>
 
     <form class="edit-trip-form" method="GET" action="/trip/{{ trip.id }}/edit_trip">
 
@@ -10,28 +24,28 @@
 
         <br>
 
-        <div> <b> Dates: </b> {{ trip.start_date }} to {{ trip.end_date }} </div>
+        <div> <h4> Dates: </h4> {{ trip.start_date }} to {{ trip.end_date }} </div>
 
 
         <br>
 
         <div id="park"> 
-            <b> Park: </b>
-                <a id="park-link" href="/parks/{{ trip.park.id }}"> {{ trip.park.park_name }} </a>
+            <h4> Park: </h4>
+               <b> <a id="park-link" href="/parks/{{ trip.park.id }}" style="color: forestgreen;"> {{ trip.park.park_name }} </a> </b>
                 <div id="park_id" hidden> {{ trip.park.id }} </div>
         </div>
 
         <br>
 
         <div id="#trip-attractions">
-            <b> Things to do: </b>
-            <ul>
+            <h4> Things to do: </h4>
+            <ul class="list-group">
                 {% for attraction in trip_attractions_objects %}
-                <li>
-                    <a href="" class="attraction" id="{{ attraction.id }}"> 
+                <li class="list-group-item trip-details-things">
+                    <b> <a href="" class="attraction" id="{{ attraction.id }}"> 
                         {{ attraction.attraction_name }}
-                    </a>
-                    <div class="result_attraction_details" id="result_{{ attraction.id }}"> </div>
+                    </a> </b>
+                    <div class="result_attraction_details trip-details-things" id="result_{{ attraction.id }}"> </div>
                 </li>
                 {% endfor %}
             </ul>
@@ -39,21 +53,27 @@
 
         <br>
 
-        <div> <b> Notes: </b>
+        <div> <h4> Notes: </h4>
             <div id="notes"> {{ trip.notes }} </div>
         </div>
 
         <br>
+        <br>
 
         <div id="edit-trip-submit">
-            <input type="submit" id="edit-trip" name="edit-trip" value="Edit Trip">
+            <input class="btn btn-warning" type="submit" id="edit-trip" name="edit-trip" value="Edit Trip">
         </div>
+        </form>
+
+        <br>
     
-    </form>
     
     <!-- JS --> 
     <script src="/static/js/trip-details.js"> </script>
 
+</div>
+</div>
+</div>
 {% endblock%}
 
 
