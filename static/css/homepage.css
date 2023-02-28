@@ -88,41 +88,15 @@
     position: relative;
 }
 
-/* .search-quote-background-alignment {
-    position: absolute;
-    height: 50px;
-    bottom: 5px;
-    left: 0;
-    background-color: black;
-    color: white;
-    padding-left: 20px;
-    padding-right: 20px;
-    max-width: 100%;
-    opacity: 0.5;
-    ;
-} */
-
 .search-quote-alignment {
     position: absolute;
     max-width: fit-content;
-    /* bottom: 50%;
-    left: 39.5%; */
     top: 50%;
     left: 50%;
     color: seashell;
     transform: translate(-50%, -50%);
-    /* padding-left: 20px;
-    padding-right: 20px; */
 }
 
-/* .search-quote-alignment {
-    position: absolute;
-    bottom: 2px;
-    left: 20px;
-    color: seashell;
-    padding-left: 20px;
-    padding-right: 20px;
-} */
 
 .dropdown-toggle-park-name{
     border: 1px;
@@ -161,16 +135,6 @@
     height: 300px;
     overflow-y: scroll;
 }
-
-/* .search-titles-align-state {
-    padding-left: 70px;
-    text-align: left;
-}
-
-.search-titles-align-activity {
-    padding-left: 41px;
-    text-align: left;
-} */
 
 
 .list-group-item {
@@ -259,17 +223,6 @@
 }
 
 
-/* CSS for search page */
-
-/* .search-page-image {
-    height: 250px;
-    background-image: url(/static/img/search-page-cover.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-} */
-
-
 /* CSS for 'User Details' page */
 
 .user-details-image {
@@ -284,9 +237,7 @@
     --bs-list-group-border-color: transparent;
 }
 
-/* .user-profile-list-shadow {
-    box-shadow: ;
-} */
+
 
 .user-profile-list-title {
     /* background-color:#cf1a2bad; */

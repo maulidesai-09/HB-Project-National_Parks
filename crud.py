@@ -36,7 +36,7 @@ def get_park_by_id(id):
 
 def get_park_by_name(name):
     """ Returns a park with given name """
-    print("Name is ", name)
+
     return Park.query.filter_by(park_name = name).first()
 
 
@@ -161,9 +161,6 @@ def get_all_topics():
 def get_matching_parks(state_name, activities, topics):
     """" Returns parks that match the given state, activities, topics """
 
-    print(state_name)
-    print("#####length = ", len(state_name))
-    print("#####type = ", type(state_name))
     all_filters = []
     if state_name != "":
         all_filters.append(Park_State.state_name == state_name)
@@ -171,8 +168,7 @@ def get_matching_parks(state_name, activities, topics):
         all_filters.append(Park_Activity.activity.in_(activities))
     if len(topics) > 0:
         all_filters.append(Park_Topic.topic.in_(topics))
-    
-    print("########### all_filters = ", all_filters)
+        
 
     all_parks = (db.session.query(Park)
                  .join(Park_State)
@@ -246,14 +242,12 @@ def get_favorite_parks_by_user(user_id):
     """ Returns a list of favorite parks for given user """
 
     user_favs = User_Favorite.query.filter_by(user_id = user_id).all()
-    # print(user_favs)
 
     user_favorites = []
     
     for fav in user_favs:
         user_favorites.append(fav.park)
 
-    # print(user_favorites)
     return user_favorites
 
 

@@ -14,9 +14,7 @@ function ReviewComment(props) {
 
 
 function AddReviewComment(props) {
-    // const [id, setId] = React.useState("")
     const[review, setReview] = React.useState("")
-    // const[user, setUser] = React.useState("")
 
     function addNewReviewComment(){
         fetch("/add-review-comment", {
@@ -58,11 +56,6 @@ function AddReviewComment(props) {
 
 
 function ReviewCommentContainer() {
-
-    // const reviewComment = {
-    //     review: "Sample review comment hard coded",
-    //     user: "Sample User"
-    // };
 
     const [comments, setComments] = React.useState([])
 

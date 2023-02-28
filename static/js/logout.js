@@ -16,12 +16,6 @@ logout.addEventListener('click', (evt) => {
     const url= `/logout?confirmation=${confirmation}`
 
     window.location.href = url
-
-//     fetch(url)
-//     .then((response) => response.text())
-//     .then((message) => {
-//         alert(message)
-//     })
 })
     
 

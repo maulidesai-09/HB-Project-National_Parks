@@ -1,8 +1,4 @@
-/* #navigation {position: absolute;
-        top: 8px;
-        right: 16px;} */
-
-/* #header {float: right} */
+/* CSS for Nav Bar */
 
 .navbar-margin-left {margin-left: 50px;}
 
@@ -18,5 +14,3 @@
         padding-left: 30px;
 }
 
-/* #search-icon {display: inline-flex;
-                vertical-align: 500rem;} */

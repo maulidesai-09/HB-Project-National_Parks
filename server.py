@@ -45,11 +45,7 @@ url = "https://developer.nps.gov/api/v1/parks"
 
 payload = {"api_key": API_KEY}
 payload['limit'] = "500"
-# payload['start'] = "0"
 
-# print("Headers = ", HEADERS)
-
-# res = requests.get(url, headers=HEADERS, params=payload)
 res = requests.get(url, params=payload)
 data = res.json()
 parks = data['data']
@@ -144,13 +140,10 @@ for park in national_parks:
                 'park_count': count + 1
                 }
     count += 1
-    # park_dict['history'] = 
-    # park_dict['main_attractions'] = 
-    # park_dict['trails'] = 
+
     parks_data.append(park_dict)
 
-# print(parks_data[0])
-# print("Length of parks_data = ", (len(parks_data)))
+
 
 json.dump(parks_data, open('data/parks.json','w'), indent=2)
 
@@ -268,15 +261,10 @@ def show_park_details(id):
 def get_details_of_main_attractions(id):
     """ Get details of main attractions to be sent via ajax response """
 
-    print("#############id = ", id)
-    print("#############id type = ", type(id))
-
     park = crud.get_park_by_id(id)
     park_code = park.park_code
 
     attraction_title = request.args.get("title", "").strip()
-
-    print("#############title = ", attraction_title)
 
 
     url = "https://developer.nps.gov/api/v1/thingstodo"
@@ -336,8 +324,6 @@ def get_details_of_main_attractions(id):
             result_attraction = attraction
     
     print("######### result attractions = ", result_attraction)
-
-    # return jsonify({'result': result_attraction})
     
     return render_template("park_details-main_attractions.html", result = result_attraction)
     
@@ -409,95 +395,6 @@ def search_form():
 
 
 
-# @app.route("/search/result")
-# def search_result():
-#     """ Show the search results """
-
-#     # park_names = crud.get_park_names()
-
-#     park_name = request.args.get("park_name", "")
-#     print("############### park_name = ", park_name)
-#     park = crud.get_park_by_name(park_name)
-#     park_code = park.park_code
-
-#     ### Get Main Attractions/ Things To Do from API 
-    
-#     url = "https://developer.nps.gov/api/v1/thingstodo"
-#     payload = {"api_key": API_KEY}
-#     payload['parkCode'] = park_code
-
-#     res = requests.get(url, params=payload)
-#     data = res.json()
-#     things_to_do = data['data']
-
-#     def get_activity_list(thing):
-#         """ Get a list of activities for each main attraction """
-
-#         activities = []
-#         for activity in thing['activities']:
-#             activities.append(activity['name'])
-        
-#         return activities
-    
-#     def get_topic_list(thing):
-#         """ Get a list of topics for each main attraction """
-
-#         topics = []
-#         for topic in thing['topics']:
-#             topics.append(topic['name'])
-        
-#         return topics
-    
-
-#     def get_images_list(thing):
-#         """ Get a list of images for each main attraction """
-
-#         images = []
-#         for image in thing['images']:
-#             images.append(image['url'])
-        
-#         return images
-    
-
-#     main_attractions = []
-    
-#     for thing in things_to_do:
-#         attraction = {}
-#         attraction['id'] = thing['id']
-#         attraction['title'] = thing['title']
-#         attraction['short_description'] = thing['shortDescription']
-#         attraction['location'] = thing['location']
-#         attraction['long_description'] = thing['longDescription']
-#         attraction['activities'] = get_activity_list(thing)
-#         attraction['topics'] = get_topic_list(thing)
-#         attraction['images'] = get_images_list(thing)
-#         main_attractions.append(attraction)
-
-#     ### Get Alerts from API
-
-#     url = "https://developer.nps.gov/api/v1/alerts"
-#     payload = {"api_key": API_KEY}
-#     payload['parkCode'] = park_code
-
-#     res = requests.get(url, params=payload)
-#     data = res.json()
-#     alerts_api = data['data']
-
-#     alerts = []
-#     for item in alerts_api:
-#         alert = {}
-#         alert['id'] = item['id']
-#         alert['url'] = item['url']
-#         alert['title'] = item['title']
-#         alert['description'] = item['description']
-#         alert['lastIndexedDate'] = item['lastIndexedDate']
-#         alerts.append(alert)
-
-#     return render_template("park_details.html", 
-#                            park=park,
-#                            main_attractions = main_attractions,
-#                            alerts = alerts)
-
 @app.route("/search/state_map_result")
 def state_map_search_results():
     """ Show the result for state selected from clickable map """
@@ -513,23 +410,22 @@ def state_map_search_results():
     topics = []
     response = True
 
-    print("######## state = ", state_name)
-    print("######## activities = ", activities)
-    print("######## topics = ", topics)
+    # print("######## state = ", state_name)
+    # print("######## activities = ", activities)
+    # print("######## topics = ", topics)
 
     if state_name == "" and len(activities) == 0 and len(topics) == 0:
        response = False
        result = "Please select a filter"
     else:
         parks = crud.get_matching_parks(state_name, activities, topics)
-        print("####### parks", parks)
         if len(parks) == 0:
             response = False
             result = "No parks available"
         else:
             result = parks
     
-    print("######## result = ", result)
+    # print("######## result = ", result)
     
 
     return render_template("advance-search-result.html", 
@@ -557,23 +453,22 @@ def advance_search_result():
     topics = request.args.getlist("topic")
     response = True
 
-    print("######## state = ", state_name)
-    print("######## activities = ", activities)
-    print("######## topics = ", topics)
+    # print("######## state = ", state_name)
+    # print("######## activities = ", activities)
+    # print("######## topics = ", topics)
 
     if state_name == "" and len(activities) == 0 and len(topics) == 0:
        response = False
        result = "Please select a filter"
     else:
         parks = crud.get_matching_parks(state_name, activities, topics)
-        print("####### parks", parks)
         if len(parks) == 0:
             response = False
             result = "No parks available"
         else:
             result = parks
     
-    print("######## result = ", result)
+    # print("######## result = ", result)
     
 
     return render_template("advance-search-result.html", 
@@ -595,17 +490,15 @@ def advance_search_result_ajax():
     topics = request.json.get("topics")
     response = True
 
-    print("######## state = ", state)
-    print("######## activities = ", activities)
-    print("######## topics = ", topics)
+    # print("######## state = ", state)
+    # print("######## activities = ", activities)
+    # print("######## topics = ", topics)
 
     if state == "" and len(activities) == 0 and len(topics) == 0:
        response = False
        result = "Please select a filter" 
     else:
         parks = crud.get_matching_parks(state, activities, topics)
-
-        print("####### parks", parks)
 
         if len(parks) == 0:
             response = False
@@ -622,8 +515,7 @@ def advance_search_result_ajax():
                 park_dict['park_long'] = park.location_long
                 park_dict['park_code'] = park.park_code
                 result.append(park_dict)
-    
-            #     result.append(park.toDict())
+
 
     return jsonify({'response': response,
                     'result': result})
@@ -651,12 +543,11 @@ def login():
     request_url = request.form.get('request_url')
 
     user_emails = crud.get_user_emails()
-    print("User emails = ", user_emails)
-    print("################### request", request_url)
+    # print("User emails = ", user_emails)
+    # print("################### request", request_url)
 
     if email in user_emails:
         user = crud.get_user_by_email(email)
-        # if user.password == password:
         if argon2.verify(password, user.password):
             session['user_email'] = user.email
             flash(f"Welcome, {user.fname}!")
@@ -687,7 +578,6 @@ def sign_up():
     if email in user_emails:
         flash("An account with this email already exists. Try again.")
     else:
-        # new_user_email = crud.create_user(fname, lname, email, password)
         new_user_email = crud.create_user(fname, lname, email, hashed_password)
         db.session.add(new_user_email)
         db.session.commit()
@@ -702,9 +592,9 @@ def logout():
     """ Log out existing user """
     
     confirmation = request.args.get('confirmation')
-    print("############", confirmation)
+    # print("############", confirmation)
     previous_path = request.referrer
-    print("###################", previous_path)
+    # print("###################", previous_path)
 
     if confirmation == "Yes":
         if "user_email" in session:
@@ -713,7 +603,6 @@ def logout():
             print("#######################", f"/users/{user_id}")
             del session['user_email']
             if previous_path == f"http://localhost:5000/users/{user_id}" or previous_path.__contains__("/trip"):
-                # flash("You have been successfully logged out!")
                 return redirect("/")
             else:
                 flash("You have been succesfully logged out!")
@@ -794,7 +683,6 @@ def add_to_wishlist(id):
         user_id = user.user_id
         park = crud.get_park_by_id(id)
         user_wishlist = crud.get_wishlist_parks_by_user(user_id)
-        # print("User favorites ########## ", user_favorites)
         if park in user_wishlist:
             flash("Park already exists in your wishlist")
         else:
@@ -846,10 +734,8 @@ def get_main_attractions_for_trip():
     """ Get main attractions to be displayed based on park selected """
     
     park_id = request.args.get("park_id", "")
-    print("###############", park_id)
 
     park_code = crud.get_park_code_by_id(park_id)
-    print("###############", park_code)
 
     url = "https://developer.nps.gov/api/v1/thingstodo"
     payload = {"api_key": API_KEY}
@@ -866,8 +752,7 @@ def get_main_attractions_for_trip():
         attraction['id'] = thing['id']
         attraction['title'] = thing['title']
         main_attractions.append(attraction)
-    
-    print("###############", main_attractions)
+
 
     return render_template("plan_trip-main_attractions.html", 
                            main_attractions = main_attractions)
@@ -883,10 +768,6 @@ def create_a_trip():
     end_date = request.args.get("end-date")
     trip_attractions_id = request.args.getlist("attraction")
     notes = request.args.get("notes")
-
-    print("#################### start_date = ", start_date)
-    print("#################### end_date = ", end_date)
-    print("#################### trip_attractions_id = ", trip_attractions_id)
 
 
     logged_in_email = session.get("user_email")
@@ -930,8 +811,6 @@ def create_a_trip():
             trip_attractions_objects.append(add_trip_attraction)
 
 
-        print("################# attraction names = ", trip_attractions)
-
         flash("Trip has been added to your profile")         
 
     return render_template("trip-details.html",
@@ -946,7 +825,7 @@ def display_trip_details(id):
     """ Display details of trip with given id """
 
     trip = crud.get_trip_by_id(id)
-    print(f"############### trip = {trip}")
+    # print(f"############### trip = {trip}")
 
     trip_attractions_objects = crud.get_attractions_for_trip(id)
 
@@ -967,7 +846,7 @@ def remove_trip(id):
 
         trip_to_be_removed = crud.get_user_trip_by_user_and_id(user_id, id)
 
-        print("########################## trip to be removed = ", trip_to_be_removed)
+        # print("########################## trip to be removed = ", trip_to_be_removed)
 
         trip_name = trip_to_be_removed.trip_name
         
@@ -1106,12 +985,6 @@ def saved_edited_trip(id):
                         trip_attractions_objects = trip_attractions_objects
                         )
 
-
-# @app.route("/trip/<id>/edit_trip_return_profile")
-# def back_to_profile(id):
-#     """ Return to user profile page """
-
-#     redirect(f"/parks/{id}")
 
 
 @app.route("/parks/<id>/review-comments")

@@ -16,7 +16,6 @@ park_name_element.addEventListener('change', (evt) => {
     if (selected_park_id == "Select a park..") {
         url = '/search'
     } else {
-        // url = `/search/result?park_name=${selected_park_id}`
         url = `/parks/${selected_park_id}`
     }
 
